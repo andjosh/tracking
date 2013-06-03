@@ -1,0 +1,52 @@
+@import url("http://fonts.googleapis.com/css?family=Merriweather:400,300,700");
+@import url("http://fonts.googleapis.com/css?family=Merriweather+Sans:400,300,700");
+@import url("http://yui.yahooapis.com/pure/0.1.0/base-min.css");
+@import url("http://yui.yahooapis.com/pure/0.1.0/grids-min.css");
+body {
+  font: 14px "Merriweather", Georgia, serif;
+  color: #222;
+}
+.sans{
+  font-family: "Merriweather Sans", Helvetica, sans-serif;
+}
+a {
+  color: #838A95;
+  text-decoration: none;
+  border-bottom: 1px solid #838A95;
+  transition: 0.5s;
+}
+a:hover{
+	color: #222;
+}
+input, .btn, button{
+	font-family: "Merriweather Sans", Helvetica, sans-serif;
+	font-size: inherit;
+	border:none;
+	border-bottom:1px solid #aaa;
+	border-radius: 0px;
+	display: inline-block;
+}
+input[type="button"], input[type="submit"], .btn, button{
+	border: none;
+	background: #ddd;
+	color: #444;
+	padding: 0.3em 1em;
+	border-radius: 0px;
+	cursor: pointer;
+	transition: 0.3s;
+}
+input[type="button"]:hover, input[type="submit"]:hover, .btn:hover, button:hover{
+	background: #eee;
+}
+#main {
+	padding: 5em;
+}
+
+
+/* Misc toolkit classes */
+.pull-right{
+	float: right;
+}
+.pull-center{
+	text-align: center;
+}

@@ -1,0 +1,98 @@
+/**
+  * TrackAnything: Everyone loves a graph.
+  *
+  * @author Joshua Beckman <@jbckmn> || <jsh@bckmn.com>
+  * @license The MIT license. 2013
+  *
+  */
+var express = require('express')
+    , routes = require('./routes')
+    , load = require('express-load')
+    , mongoose = require('mongoose')
+    , passport = require('passport')
+  	, LocalStrategy = require('passport-local').Strategy
+    , index = require('./routes/index')
+    , http = require('http')
+    , path = require('path')
+    , io = require('socket.io');
+
+var app = express();
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);
+
+// For Heroku sockets to work
+io.configure(function () {
+  io.set("transports", ["xhr-polling"]);
+  io.set("polling duration", 10);
+});
+
+// Socket code
+io.sockets.on('connection', function (socket) {
+    socket.emit('admin', { message: 'Welcome!' });
+});
+
+// Define what mongo to yell at
+var mongoUri = process.env.MONGOLAB_URI 
+                || process.env.MONGOHQ_URL 
+                || 'mongodb://localhost/trackme';
+
+// Configuration
+app.configure(function(){
+    app.set('views', __dirname + '/views');
+    app.set('view engine', 'jade');
+    app.set('view options', { layout: false });
+    app.set('port', process.env.PORT || 5000);
+    app.use(express.logger());
+    app.use(express.bodyParser());
+    app.use(express.methodOverride());
+
+    app.use(express.cookieParser('your secret here'));
+    app.use(express.session({ secret: 'marybeth and the fox fighting bant' })); // CHANGE THIS SECRET!
+	  // Remember Me middleware
+	  app.use( function (req, res, next) {
+	    if ( req.method == 'POST' && req.url == '/login' ) {
+	      if ( req.body.rememberme ) {
+	        req.session.cookie.maxAge = 2592000000; // 30*24*60*60*1000 Rememeber 'me' for 30 days
+	      } else {
+	        req.session.cookie.expires = false;
+	      }
+	    }
+	    next();
+	  });
+
+    app.use(passport.initialize());
+    app.use(passport.session());
+
+    app.use(app.router);
+    app.use(express.static(path.join(__dirname, 'public')));
+});
+
+app.configure('development', function(){
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+});
+
+app.configure('production', function(){
+    app.use(express.errorHandler());
+});
+
+server.listen(app.get('port'));
+
+// Let's see what's going on
+console.log("Express server listening on port %d in %s mode", app.get('port'), app.settings.env);
+
+// Configure passport
+var Account = require('./models/account');
+
+passport.use(new LocalStrategy(Account.authenticate()));
+
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
+
+// Connect mongoose
+mongoose.connect(mongoUri);
+
+// Setup routes
+require('./routes')(app);
+
+// Routes with io
+app.get("/", index.index(io));

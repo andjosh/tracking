@@ -1,0 +1,32 @@
+{
+  "name": "trackanything",
+  "description": "Everyone loves a graph.",
+  "version": "0.0.1",
+  "private": true,
+  "author": "Joshua Beckman <@jbckmn>",
+  "main": "./app.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jbckmn/trackanything.git"
+  },
+  "engine": [
+    "node >=0.4.0"
+  ],
+  "scripts": {
+    "start": "node app"
+  },
+  "dependencies": {
+    "express": "3.1.1",
+    "jade": "*",
+    "bcrypt": "*",
+    "connect-flash": "*",
+    "passport": "*",
+    "passport-local": "*",
+    "passport-local-mongoose": "*",
+    "mongoose": "~3.5.4",
+    "request": "~2.16.6",
+    "socket.io":"*",
+    "express-load":"*",
+    "xml-digester":"*"
+  }
+}

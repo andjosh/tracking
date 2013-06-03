@@ -1,0 +1,23 @@
+extends layout
+
+block content
+
+	if message
+		p #{message}
+
+	#main.pure-g-r
+		.pure-u-1-2.pull-center
+			h1.sans= title
+			#infoBox
+			p#about Everyone likes a graph.
+		.pure-u-1-2
+			form(action="/login", method="post")
+				#username
+					input(type="text", name="username", placeholder="Username")
+				#password
+					input(type="password", name="password", placeholder="Password")
+				#remember
+					input(type="checkbox", name="rememberme")
+					| Remember Me
+				#submit
+				input(type="submit", value="Submit")
