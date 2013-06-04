@@ -27,6 +27,7 @@ input, .btn, button{
 	border-radius: 0px;
 	display: inline-block;
 	width: 100%;
+	margin: 1em 0;
 }
 input[type="checkbox"], input[type="radio"] {
 	width: auto;

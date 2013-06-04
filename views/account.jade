@@ -10,4 +10,34 @@ block content
 			h1.sans
 				a(href="/")= title
 			#infoBox
-			p#about Everyone likes a graph.
+			p#about= 'Hi ' + user.username + '!'
+			small [Allow for data export here]
+		.pure-u-1-2
+			h3.pull-center.sans Edit your information
+			form(action="/account", method="post")
+				.pure-g-r
+					.pure-u-1-2
+						#username
+							input(type="text", name="username", placeholder="Username", value="#{ user.username }")
+					.pure-u-1-2
+						#email
+							input(type="text", name="email", placeholder="Email", value="#{ user.email ? user.email : '' }")
+				.pure-g-r
+					.pure-u-1-2
+						#birthdate
+							input(type="text", name="birthdate", placeholder="Birthdate", value="#{ user.birthdate ? user.birthdate : '' }")
+					.pure-u-1-2
+						#gender
+							input(type="text", name="gender", placeholder="Gender", value="#{ user.gender ? user.gender : '' }")
+				.pure-g-r
+					.pure-u-1-2
+						#location
+							input(type="text", name="location", placeholder="Location", value="#{ user.location ? user.location : '' }")
+					.pure-u-1-2
+						#occupation
+							input(type="text", name="occupation", placeholder="Occupation", value="#{ user.occupation ? user.occupation : '' }")
+				.pure-g-r
+					.pure-u-1-4
+					.pure-u-1-2
+						#submit
+							input(type="submit", value="Update")

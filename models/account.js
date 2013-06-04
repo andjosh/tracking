@@ -1,5 +1,5 @@
 /**
-  * User: A person with data
+  * Account: A person with data
   *
   */
 var mongoose = require('mongoose'),
@@ -7,7 +7,10 @@ var mongoose = require('mongoose'),
     passportLocalMongoose = require('passport-local-mongoose');
 
 var Account = new Schema({
-    nickname: String,
+    email: String,
+    location: String,
+    occupation: String,
+    gender: String,
     birthdate: Date,
     accessToken: String // Used for Remember Me
 });
