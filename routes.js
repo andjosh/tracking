@@ -15,7 +15,7 @@ function ensureAuthenticated(req, res, next) {
 module.exports = function (app) {
 
     app.get('/register', function(req, res) {
-        res.render('register', { });
+        res.render('register', { title: 'Register', user: req.user });
     });
 
     app.post('/register', function(req, res) {
@@ -29,11 +29,11 @@ module.exports = function (app) {
     });
 
     app.get('/account', ensureAuthenticated, function(req, res){
-      res.render('account', { user: req.user });
+      res.render('account', { user: req.user, title : "Your account" });
     });
 
     app.get('/login', function(req, res) {
-        res.render('login', { user : req.user });
+        res.render('login', { title: 'Log In', user: req.user });
     });
 
     app.post('/login', passport.authenticate('local'), function(req, res) {

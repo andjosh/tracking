@@ -7,10 +7,11 @@ block content
 
 	#main.pure-g-r
 		.pure-u-1-2.pull-center
-			h1.sans= title
+			h1.sans
+				a(href="/")= title
 			#infoBox
 			p#about Everyone likes a graph.
-		.pure-u-1-2
+		.pure-u-1-4
 			form(action="/login", method="post")
 				#username
 					input(type="text", name="username", placeholder="Username")
