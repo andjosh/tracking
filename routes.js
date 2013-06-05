@@ -32,11 +32,16 @@ module.exports = function (app) {
     });
 
     app.post('/account', ensureAuthenticated, function(req, res){
-      var conditions = { _id: req.user._id };
+      var conditions = { _id: req.user._id }, month, day, year;
+      if (req.body.birthdate) {
+        month = req.body.birthdate[0]+req.body.birthdate[1];
+        day = req.body.birthdate[3]+req.body.birthdate[4];
+        year = req.body.birthdate[6]+req.body.birthdate[7]+req.body.birthdate[8]+req.body.birthdate[9];
+      }
       var updates = { username : req.body.username, 
                       email : req.body.email, 
                       gender : req.body.gender, 
-                      birthdate : req.body.birthdate,
+                      birthdate : new Date(year, month-1, day),
                       occupation : req.body.occupation,
                       location : req.body.location}
       Account.update(conditions, updates, function updatedAccount(err) {

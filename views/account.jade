@@ -8,7 +8,7 @@ block content
 	#main.pure-g-r
 		.pure-u-1-2.pull-center
 			h1.sans
-				a(href="/")= title
+				a(href="")= title
 			#infoBox
 			p#about= 'Hi ' + user.username + '!'
 			small [Allow for data export here]
@@ -25,14 +25,18 @@ block content
 				.pure-g-r
 					.pure-u-1-2
 						#birthdate
-							input(type="text", name="birthdate", placeholder="Birthdate", value="#{ user.birthdate ? user.birthdate : '' }")
+							if user.birthdate
+								- var day   = user.birthdate.getDate();
+								- var month = user.birthdate.getMonth() + 1;
+								- var year  = user.birthdate.getFullYear();
+							input(type="text", name="birthdate", placeholder="Birthdate (MM/DD/YYYY)", value="#{ user.birthdate ? (month + "/" + day + "/" + year) : '' }")
 					.pure-u-1-2
 						#gender
 							input(type="text", name="gender", placeholder="Gender", value="#{ user.gender ? user.gender : '' }")
 				.pure-g-r
 					.pure-u-1-2
 						#location
-							input(type="text", name="location", placeholder="Location", value="#{ user.location ? user.location : '' }")
+							input(type="text", name="location", placeholder="Location (ex: Chicago, IL)", value="#{ user.location ? user.location : '' }")
 					.pure-u-1-2
 						#occupation
 							input(type="text", name="occupation", placeholder="Occupation", value="#{ user.occupation ? user.occupation : '' }")
