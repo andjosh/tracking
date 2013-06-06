@@ -9,5 +9,10 @@ block content
 			#infoBox
 			p#about Everyone likes a graph.
 		.pure-u-1-2
-		
+			if user
+				h2.sans Hi #{ user.username }!
+				p You are 
+					span#age ......
+					|  years old.
+
 		script(src='/javascripts/index.js')
