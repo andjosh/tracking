@@ -9,9 +9,12 @@ block content
 		.pure-u-1-2.pull-center
 			h1.sans
 				a(href="")= title
-			#infoBox
-			p#about= 'Hi ' + user.username + '!'
-			small [Allow for data export here]
+			.pure-g-r
+				.pure-u-1-4
+					a(href="", class="btn") Export my data
+			.pure-g-r
+				.pure-u-1-4
+					a(href="", class="btn") Email my graph
 		.pure-u-1-2
 			h3.pull-center.sans Edit your track
 			form(action="/account", method="post")

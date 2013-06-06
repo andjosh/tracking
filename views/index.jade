@@ -12,7 +12,9 @@ block content
 			if user
 				h2.sans Hi #{ user.username }!
 				p You are 
-					span#age ......
+					span#age many
 					|  years old.
+			if (!user)
+				p Join #{ accounts.length } strong by registering and starting on your own track today.
 
 		script(src='/javascripts/index.js')

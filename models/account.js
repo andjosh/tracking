@@ -1,5 +1,5 @@
 /**
-  * Account: A person with data
+  * Account: A person, owning data
   *
   */
 var mongoose = require('mongoose'),

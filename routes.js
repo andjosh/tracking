@@ -1,6 +1,8 @@
 var passport = require('passport')
     , index = require('./routes/index')
-    , Account = require('./models/account');
+    , Account = require('./models/account')
+    , Datum = require('./models/datum')
+    , Category = require('./models/category');
 
 // Simple route middleware to ensure user is authenticated.
 //   Use this route middleware on any resource that needs to be protected.  If
@@ -57,6 +59,10 @@ module.exports = function (app) {
     });
 
     app.post('/login', passport.authenticate('local'), function(req, res) {
+        if (res.body == 'Unauthorized') {
+          console.log("Login error")
+        }
+        console.log("Login error")
         res.redirect('/account');
     });
 
