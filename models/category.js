@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var Category = new Schema({
-    name: { type: String, required: true },
+    name: { type: String },
     data: [{ type: Schema.Types.ObjectId, ref: 'Datum' }]
 });
 

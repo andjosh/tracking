@@ -16,7 +16,7 @@ exports.index = function(io) {
 			function newAge() {
 				var now = new Date();
 		    var aged = Math.round((now - userAge)/(1000*60*60*24*7*52)*10000000)/10000000;
-			  io.sockets.emit('newAge', { years: aged });
+			  io.sockets.emit('newAge'+req.user._id, { years: aged });
 			  ageTimer();
 			};
 			function ageTimer() {

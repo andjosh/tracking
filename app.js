@@ -13,6 +13,7 @@ var express = require('express')
     , flash = require('connect-flash')
   	, LocalStrategy = require('passport-local').Strategy
     , index = require('./routes/index')
+    , datum = require('./routes/datum')
     , http = require('http')
     , path = require('path')
     , io = require('socket.io');
@@ -92,8 +93,16 @@ passport.deserializeUser(Account.deserializeUser());
 // Connect mongoose
 mongoose.connect(mongoUri);
 
+// Route protection
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) { return next(); }
+  res.redirect('/login')
+}
+
 // Setup routes
 require('./routes')(app);
 
 // Routes with io
 app.get("/", index.index(io));
+app.get("/add-datum", ensureAuthenticated, datum.addDatum(io));
+app.post("/add-datum", ensureAuthenticated, datum.postDatum(io));
