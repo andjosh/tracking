@@ -24,7 +24,7 @@ exports.index = function(io) {
 			};
 		}
 		Account.find( function foundUsers(err, accounts) {
-      res.render('index',{title: 'Track Anything', user: req.user, accounts: accounts})
+      res.render('index',{title: 'Track Anything', user: req.user, accounts: accounts, message: req.flash('info'), error: req.flash('error')})
     });
   };
 };

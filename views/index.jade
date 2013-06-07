@@ -2,6 +2,11 @@ extends layout
 
 block content
 
+	if message
+		p.pull-center.message #{message}
+	if error
+		p.pull-center.error #{error}
+
 	#main.pure-g-r
 		.pure-u-1-2.pull-center
 			h1.sans
@@ -10,9 +15,10 @@ block content
 			p#about Everyone likes a graph.
 		.pure-u-1-2
 			if user
-				h2.sans Hi #{ user.username }!
+				if user.username
+					h2.sans Hi #{ user.username }!
 				p You are 
-					span#age many
+					a#age(href="/account", class="") many
 					|  years old.
 			if (!user)
 				p Join #{ accounts.length } strong by registering and starting on your own track today.

@@ -10,6 +10,7 @@ var express = require('express')
     , load = require('express-load')
     , mongoose = require('mongoose')
     , passport = require('passport')
+    , flash = require('connect-flash')
   	, LocalStrategy = require('passport-local').Strategy
     , index = require('./routes/index')
     , http = require('http')
@@ -45,7 +46,7 @@ app.configure(function(){
     app.use(express.logger());
     app.use(express.bodyParser());
     app.use(express.methodOverride());
-
+    app.use(flash());
     app.use(express.cookieParser('your secret here'));
     app.use(express.session({ secret: 'marybeth and the fox fighting bant' })); // CHANGE THIS SECRET!
 	  // Remember Me middleware

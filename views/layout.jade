@@ -13,6 +13,9 @@ html
           ul
             li
               a(href="/account")= "Your Track"
+            if user
+              li
+                a(href="/add")= "Add"
             li
               a(href="/")= "Home"
             if user

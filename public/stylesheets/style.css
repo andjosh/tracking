@@ -33,6 +33,7 @@ input, .btn-full, button{
 }
 input[type="checkbox"], input[type="radio"] {
 	width: auto;
+	margin: 0.5em;
 }
 input[type="button"], input[type="submit"], .btn, button{
 	border: none;
@@ -49,7 +50,18 @@ input[type="button"]:hover, input[type="submit"]:hover, .btn:hover, button:hover
 #main {
 	padding: 5em;
 }
-
+.message {
+	line-height: 3em;
+	color: #384682;
+	background-color: #c3cbf0;
+	margin: 0;
+}
+.error {
+	line-height: 3em;
+	color: #7e3636;
+	background-color: #edb7b7;
+	margin: 0;
+}
 
 /* Misc toolkit classes */
 .pull-right{

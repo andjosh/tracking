@@ -17,20 +17,26 @@ function ensureAuthenticated(req, res, next) {
 module.exports = function (app) {
 
     app.get('/register', function(req, res) {
-        res.render('register', { title: 'Register', user: req.user });
+        res.render('register', { title: 'Register', user: req.user, message: req.flash('info'), error: req.flash('error') });
     });
 
     app.post('/register', function(req, res) {
+      if (req.body.password != req.body.password_conf) {
+        req.flash('error', 'Password and password confirmation must match.')
+        res.redirect('/register');
+      }
         Account.register(new Account({ username : req.body.username }), req.body.password, function(err, account) {
             if (err) {
-                return res.render('register', { account : account });
+                req.flash('error', 'That email is already in use.')
+                return res.redirect('/register');
             }
+            req.flash('info', 'Now log in using the account you just created.')
             res.redirect('/account');
         });
     });
 
     app.get('/account', ensureAuthenticated, function(req, res){
-      res.render('account', { user: req.user, title : "Your account" });
+      res.render('account', { user: req.user, title : "Your account", message: req.flash('info') });
     });
 
     app.post('/account', ensureAuthenticated, function(req, res){
@@ -55,19 +61,17 @@ module.exports = function (app) {
     });
 
     app.get('/login', function(req, res) {
-        res.render('login', { title: 'Log In', user: req.user });
+      res.render('login', { title: 'Log In', user: req.user, message: req.flash('info'), error: req.flash('error') });
     });
 
-    app.post('/login', passport.authenticate('local'), function(req, res) {
-        if (res.body == 'Unauthorized') {
-          console.log("Login error")
-        }
-        console.log("Login error")
-        res.redirect('/account');
+    app.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureFlash: 'Invalid email or password.' }), function(req, res) {
+        req.flash('info', 'Hi there!')
+        res.redirect('/');
     });
 
     app.get('/logout', function(req, res) {
         req.logout();
+        req.flash('info', 'You have been logged out. Thanks for staying on track!')
         res.redirect('/');
     });
 };
