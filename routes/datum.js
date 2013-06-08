@@ -67,8 +67,8 @@ exports.postDatum = function(io) {
           console.log(resultDatum._id+' datum created')
         });
       }
-
-      res.redirect('/add-datum')
+      req.flash('info', 'Data tracked!')
+      res.redirect('/')
     });
   };
 };

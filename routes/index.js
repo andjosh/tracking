@@ -24,7 +24,13 @@ exports.index = function(io) {
 			};
 		}
 		Account.find( function foundUsers(err, accounts) {
-      res.render('index',{title: 'Track Anything', user: req.user, accounts: accounts, message: req.flash('info'), error: req.flash('error')})
+			Category.find( function foundCategories(err, categories) {
+	      var catList = [];
+	      categories.forEach(function(cat) {
+	        catList.push('"'+cat.name+'"')
+	      }); 
+      		res.render('index',{title: 'Track Anything', user: req.user, accounts: accounts, categories: catList, message: req.flash('info'), error: req.flash('error')})
+    	});
     });
   };
 };
