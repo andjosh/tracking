@@ -12,6 +12,7 @@ var Account = new Schema({
     occupation: String,
     gender: String,
     birthdate: Date,
+    joined: { type: Date, default: Date.now },
     accessToken: String // Used for Remember Me
 });
 
