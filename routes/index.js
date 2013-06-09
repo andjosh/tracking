@@ -8,9 +8,9 @@ var passport = require('passport')
 
 exports.index = function(io) {
 	return function(req,res) {
-		console.log('User is ' + req.user.email)
 
 		if (req.user)  {
+			console.log('User is ' + req.user.email)
 			ageTimer();
 			var userAge = new Date(req.user.birthdate);
 			function newAge() {
