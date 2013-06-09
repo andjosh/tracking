@@ -74,6 +74,9 @@ input[type="button"]:hover, input[type="submit"]:hover, .btn:hover, button:hover
 .pull-center{
 	text-align: center;
 }
+.float-right{
+  float: right;
+}
 
 /* Misc modal classes from Bootstrap */
 .dropup,

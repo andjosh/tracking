@@ -36,7 +36,11 @@ module.exports = function (app) {
     });
 
     app.get('/account', ensureAuthenticated, function(req, res){
-      res.render('account', { user: req.user, title : "Your account", message: req.flash('info') });
+      Datum.find({account: req.user._id}).sort('-date').exec(function(err,data) { // Find account data
+        Category.populate(data, {path: 'category', model: 'Category'}, function(err, data) {
+          res.render('account', { user: req.user, title : "Your account", data: data, message: req.flash('info') });
+        })
+      })
     });
 
     app.post('/account', ensureAuthenticated, function(req, res){
@@ -54,9 +58,12 @@ module.exports = function (app) {
                       location : req.body.location}
       Account.update(conditions, updates, function updatedAccount(err) {
         if(err) {
+          req.flash('error', 'There was a problem in saving that information')
+          res.redirect('/account');
           throw err;
         }
       });
+      req.flash('info', 'Updated!')
       res.redirect('/');
     });
 

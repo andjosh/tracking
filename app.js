@@ -106,3 +106,6 @@ require('./routes')(app);
 app.get("/", index.index(io));
 app.get("/add-datum", ensureAuthenticated, datum.addDatum(io));
 app.post("/add-datum", ensureAuthenticated, datum.postDatum(io));
+app.get("/datum/:id", ensureAuthenticated, datum.viewDatum(io));
+app.post("/datum/:id", ensureAuthenticated, datum.upDatum(io));
+app.get("/datum/:id/remove", ensureAuthenticated, datum.removeDatum(io));

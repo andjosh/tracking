@@ -50,3 +50,11 @@ block content
 					.pure-u-1-2
 						#submit
 							input(type="submit", value="Update")
+
+	.second-main.pure-g-r
+		.pure-u-2-5
+		.pure-u-1-5
+			for datum in data
+				p 
+					a(href="/datum/#{datum._id}") #{datum.category.name} 
+						span.float-right #{datum.quantity}
