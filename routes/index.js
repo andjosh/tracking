@@ -50,7 +50,7 @@ exports.index = function(io) {
 				whenTracking.verbose = true;
 				Datum.mapReduce(whenTracking, function (err, model, stats) {
 				  console.log('whenTracking map reduce took %d ms', stats.processtime)
-				  model.find().where('value').gt(0).exec(function (err, whenDocs) {
+				  model.find().where('value').gt(0).sort('-date').exec(function (err, whenDocs) {
 				    whenDocs.forEach(function(doc) {
 				    	console.log('Data entered '+doc._id+' : '+doc.value)
 				    })
