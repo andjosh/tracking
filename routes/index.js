@@ -43,23 +43,23 @@ exports.index = function(io) {
 		    		console.log(cat.name+' : '+doc.value)
 		    	})
 		    })
+		    var whenTracking = {}; // Find when data is being tracked/entered
+				whenTracking.map = function () { emit(((this.date.getFullYear()).toString()+(this.date.getMonth() + 1).toString()+(this.date.getDate()).toString()), 1) }
+				whenTracking.reduce = function (k, vals) { return vals.length }
+				whenTracking.out = { replace: 'whenTracking' }
+				whenTracking.verbose = true;
+				Datum.mapReduce(whenTracking, function (err, model, stats) {
+				  console.log('whenTracking map reduce took %d ms', stats.processtime)
+				  model.find().where('value').gt(0).exec(function (err, whenDocs) {
+				    whenDocs.forEach(function(doc) {
+				    	console.log('Data entered '+doc._id+' : '+doc.value)
+				    })
+				    Account.count( function foundUsers(err, accounts) { 
+				   		res.render('index',{title: 'Track Anything', user: req.user, whenData: whenDocs, accounts: accounts, message: req.flash('info'), error: req.flash('error')})
+				    });
+				  });
+				})
 		  });
 		})
-		var whenTracking = {}; // Find when data is being tracked/entered
-		whenTracking.map = function () { emit(((this.date.getMonth() + 1).toString()+(this.date.getDate()).toString()+(this.date.getFullYear()).toString()), 1) }
-		whenTracking.reduce = function (k, vals) { return vals.length }
-		whenTracking.out = { replace: 'whenTracking' }
-		whenTracking.verbose = true;
-		Datum.mapReduce(whenTracking, function (err, model, stats) {
-		  console.log('whenTracking map reduce took %d ms', stats.processtime)
-		  model.find().where('value').gt(0).exec(function (err, docs) {
-		    docs.forEach(function(doc) {
-		    	console.log('Data entered '+doc._id+' : '+doc.value)
-		    })
-		  });
-		})
-		Account.count( function foundUsers(err, accounts) { 
-   		res.render('index',{title: 'Track Anything', user: req.user, accounts: accounts, message: req.flash('info'), error: req.flash('error')})
-    });
   };
 };

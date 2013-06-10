@@ -27,6 +27,7 @@
     "request": "~2.16.6",
     "socket.io":"*",
     "express-load":"*",
-    "xml-digester":"*"
+    "xml-digester":"*",
+    "mailgun":"*"
   }
 }

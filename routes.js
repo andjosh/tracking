@@ -2,8 +2,10 @@ var passport = require('passport')
     , index = require('./routes/index')
     , Account = require('./models/account')
     , Datum = require('./models/datum')
-    , Category = require('./models/category');
+    , Category = require('./models/category')
+    , Mailgun = require('mailgun').Mailgun;
 
+var mg = new Mailgun('key-5n1bqp873lh8yritf-uiogsvgn120fa4');
 // Simple route middleware to ensure user is authenticated.
 //   Use this route middleware on any resource that needs to be protected.  If
 //   the request is authenticated (typically via a persistent login session),
@@ -25,14 +27,24 @@ module.exports = function (app) {
         req.flash('error', 'Password and password confirmation must match.')
         res.redirect('/register');
       }
-        Account.register(new Account({ username : req.body.username }), req.body.password, function(err, account) {
-            if (err) {
-                req.flash('error', 'That email is already in use.')
-                return res.redirect('/register');
-            }
-            req.flash('info', 'Now log in using the account you just created.')
-            res.redirect('/account');
-        });
+      Account.register(new Account({ email : req.body.email }), req.body.password, function(err, account) {
+          if (err) {
+              req.flash('error', 'That email is already in use.')
+              return res.redirect('/register');
+          }
+          // Welcome email
+          mg.sendText('info@track.me', [req.body.email],
+            'Welcome to tracking!',
+            'Welcome to tracking! You can always track yourself, every day, on the home page: http://track.me',
+            'trackme.mailgun.org', {},
+            function(err) {
+              if (err) console.log('Oh noes: ' + err);
+              else     console.log('Successful Welcome email');
+          });
+          // Then redirect
+          req.flash('info', 'Now log in using the account you just created.')
+          res.redirect('/account');
+      });
     });
 
     app.get('/account', ensureAuthenticated, function(req, res){
