@@ -5,6 +5,12 @@
   * @license The MIT license. 2013
   *
   */
+if(process.env.NODETIME_ACCOUNT_KEY) {
+  require('nodetime').profile({
+    accountKey: process.env.NODETIME_ACCOUNT_KEY,
+    appName: 'OnTrack'
+  });
+}
 var express = require('express')
     , routes = require('./routes')
     , load = require('express-load')

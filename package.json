@@ -29,6 +29,7 @@
     "express-load":"*",
     "xml-digester":"*",
     "mailgun":"*",
-    "async":"*"
+    "async":"*",
+    "nodetime":"*"
   }
 }
