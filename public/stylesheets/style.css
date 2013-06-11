@@ -66,6 +66,9 @@ input[type="button"]:hover, input[type="submit"]:hover, .btn:hover, button:hover
 	background-color: #edb7b7;
 	margin: 0;
 }
+.lead {
+  font-size: 1.2em;
+}
 
 /* Misc toolkit classes */
 .pull-right{

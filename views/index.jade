@@ -21,21 +21,30 @@ block content
 					a#age(href="/account", class="") many
 					|  years old.
 			if (!user)
-				p.pull-center Join #{ accounts } strong by registering and starting on your own track today.
+				p.pull-center.lead Join #{ accounts } others by registering and starting on your own track today.
 	if user
+		.second-main
+			.pure-g-r
+				.pure-u-1-2.pull-center
+					h2 Add Data
+				.pure-u-1-4
+					form(action="/add-datum", method="post")
+						.pure-u-3-4
+							#category
+								input(type="text", data-provide="typeahead", name="category", placeholder="Name/Category", data-source='[#{ categories }]')
+						.pure-u-1-4
+							input(type="float", name="quantity", placeholder="Quantity")
+						input(type="hidden", name="account", value=user._id)
+						#submit
+						input(type="submit", value="Add")
 		.second-main.pure-g-r
-			.pure-u-1-2.pull-center
-				h2 Add Data
-			.pure-u-1-4
-				form(action="/add-datum", method="post")
-					.pure-u-3-4
-						#category
-							input(type="text", data-provide="typeahead", name="category", placeholder="Name/Category", data-source='[#{ categories }]')
-					.pure-u-1-4
-						input(type="float", name="quantity", placeholder="Quantity")
-					input(type="hidden", name="account", value=user._id)
-					#submit
-					input(type="submit", value="Add")
+			.pure-u-1-3
+			.pure-u-1-3.pull-center
+				h2 You are tracking
+			.pure-u-1-3
+			for datum in dataCats
+				.pure-u-1-5.pull-center
+					a(href="/category/#{datum.category._id}").btn #{datum.category.name} 
 
 		script(src='/javascripts/add-datum.js')
 		script(src='/javascripts/index.js')

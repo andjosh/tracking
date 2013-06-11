@@ -88,6 +88,35 @@ module.exports = function (app) {
         res.redirect('/');
     });
 
+    app.get('/reset-password', ensureAuthenticated, function(req, res) {
+      res.render('reset-password', { title: 'Reset Password', user: req.user, message: req.flash('info'), error: req.flash('error') });
+    });
+
+    app.post('/reset-password', ensureAuthenticated, function(req, res) {
+      if (req.body.password != req.body.password_conf) {
+        req.flash('error', 'New password and password confirmation must match.')
+        res.redirect('/reset-password');
+      }
+      Account.findById(req.user._id, function foundAccount(err, account){
+        account.setPassword(req.body.password, function setPassword(err, resetAccount){
+          if(err) {
+            req.flash('error', 'There was a problem in saving that information')
+            res.redirect('/account');
+            throw err;
+          }
+          resetAccount.save(function(err, saved){
+            if(err) {
+              req.flash('error', 'There was a problem in saving that information')
+              res.redirect('/account');
+              throw err;
+            }
+            req.flash('info', 'New password saved!')
+            res.redirect('/account');
+          })
+        })
+      })
+    });
+
     app.get('/logout', function(req, res) {
         req.logout();
         req.flash('info', 'You have been logged out. Thanks for staying on track!')

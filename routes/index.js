@@ -22,13 +22,17 @@ exports.index = function(io) {
 			function ageTimer() {
 				setTimeout(newAge, 1000);
 			};
-			Category.find( function foundCategories(err, categories) {
-	      var catList = [];
-	      categories.forEach(function(cat) {
-	        catList.push('"'+cat.name+'"')
-	      }); 
-      		res.render('index',{title: 'Track Anything', user: req.user, categories: catList, message: req.flash('info'), error: req.flash('error')})
-    	});
+			Datum.find({account: req.user._id}, null, {distinct: 'category'}).sort('-date').exec(function(err,data) { // Find account data
+        Category.populate(data, {path: 'category', model: 'Category'}, function(err, data) {
+					Category.find( function foundCategories(err, categories) {
+			      var catList = [];
+			      categories.forEach(function(cat) {
+			        catList.push('"'+cat.name+'"')
+			      }); 
+		      		res.render('index',{title: 'Track Anything', user: req.user, dataCats: data, categories: catList, message: req.flash('info'), error: req.flash('error')})
+		    	});
+				});
+      });
 		}
 		var whatIsTracking = {}; // Find how much data is behind each category
 		whatIsTracking.map = function () { emit(this.category, 1) }
