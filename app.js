@@ -104,6 +104,7 @@ require('./routes')(app);
 
 // Routes with io
 app.get("/", index.index(io));
+// app.get("/", index.test(io));
 app.get("/add-datum", ensureAuthenticated, datum.addDatum(io));
 app.post("/add-datum", ensureAuthenticated, datum.postDatum(io));
 app.get("/datum/:id", ensureAuthenticated, datum.viewDatum(io));
