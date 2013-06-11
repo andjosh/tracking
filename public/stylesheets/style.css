@@ -14,7 +14,7 @@ a {
   color: #838A95;
   text-decoration: none;
   border-bottom: 1px solid #838A95;
-  transition: 0.5s;
+  transition: 0.3s;-moz-transition: 0.3s;-webkit-transition: 0.3s;-o-transition: 0.3s;
 }
 a:hover{
 	color: #222;
@@ -42,7 +42,11 @@ input[type="button"], input[type="submit"], .btn, button{
 	padding: 0.3em 1em;
 	border-radius: 0px;
 	cursor: pointer;
-	transition: 0.3s;
+	transition: 0.3s;-moz-transition: 0.3s;-webkit-transition: 0.3s;-o-transition: 0.3s;
+}
+input[type="submit"]{
+  color: #384682;
+  background-color: #c3cbf0;
 }
 input[type="button"]:hover, input[type="submit"]:hover, .btn:hover, button:hover{
 	background: #eee;
@@ -65,6 +69,9 @@ input[type="button"]:hover, input[type="submit"]:hover, .btn:hover, button:hover
 	color: #7e3636;
 	background-color: #edb7b7;
 	margin: 0;
+}
+.error:hover {
+  color: #7e3636;
 }
 .lead {
   font-size: 1.2em;
