@@ -76,6 +76,11 @@ input[type="button"]:hover, input[type="submit"]:hover, .btn:hover, button:hover
 .lead {
   font-size: 1.2em;
 }
+.circled {
+  border-radius: 50%;
+  background: #fff;
+  padding: 0 0.3em;
+}
 
 /* Misc toolkit classes */
 .pull-right{

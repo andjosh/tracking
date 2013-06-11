@@ -57,7 +57,10 @@ block content
 	.second-main.pure-g-r
 		.pure-u-2-5
 		.pure-u-1-5
-			for datum in data
+			- for(var i = 0; i < (data.length-1); i++)
 				p 
-					a(href="/datum/#{datum._id}") #{datum.category.name} 
-						span.float-right #{datum.quantity}
+					a(href="/datum/#{data[i]._id}") #{data[i].category.name}
+						span.float-right #{data[i].quantity}
+				- var o = i+1;
+				- if ( ( data[i].date.getDate() - data[o].date.getDate() ) > 0)
+					hr

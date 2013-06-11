@@ -34,19 +34,31 @@ exports.index = function(io) {
 			  model.find().where('value').gt(0).exec(function (err, docs) {
 			  	var whenCats = [];
 			    async.series([
-			    	docs.forEach(function(doc) {
-				    	Category.findById(doc._id, function(err, cat) {
-				    		console.log(cat.name+' : '+doc.value)
-				    		whenCats.push(cat.name)
-				    	})
-				    }),
-				    Category.find( function foundCategories(err, categories) {
-				      var catList = [];
-				      categories.forEach(function(cat) {
-				        catList.push('"'+cat.name+'"')
-				      }); 
-			      		res.render('index',{title: 'Track Anything', user: req.user, whenData: docs, whenCats: whenCats, categories: catList, message: req.flash('info'), error: req.flash('error')})
-			    	})
+			    	function(callback){
+				    	docs.forEach(function(doc) {
+					    	Category.findById(doc._id, function(err, cat) {
+					    		console.log(cat.name+' : '+doc.value)
+					    		if (!cat){
+					    			whenCats.push('')
+					    		} 
+					    		else {
+					    			whenCats.push(cat.name)
+					    		}
+					    		if (whenCats.length == docs.length){
+					    			callback(null)
+					    		}
+					    	}) // end Category find
+					    }) // end forEach
+				    },
+				    function(callback){
+					    Category.find( function foundCategories(err, categories) {
+					      var catList = [];
+					      categories.forEach(function(cat) {
+					        catList.push('"'+cat.name+'"')
+					      }); 
+				      		res.render('index',{title: 'Track Anything', user: req.user, whenData: docs, whenCats: whenCats, categories: catList, message: req.flash('info'), error: req.flash('error')})
+				    	}) // end Category list compilation
+					  }
 			    ])
 			  });
 			});
@@ -98,6 +110,12 @@ exports.index = function(io) {
 exports.test = function(io) {
 	return function(req,res) {
 		Account.findById('51ac0652ebc3e556db000001', function(err, testUser){
+			Datum.find({account:'51ac0652ebc3e556db000001', distinct: 'category'}, function(err,foundData){
+				Category.populate(foundData, { path: 'category' }, function(err, data) {
+					res.render('test-index',{title: 'Track Anything', user: testUser, data: data, message: req.flash('info'), error: req.flash('error')})
+				})
+			})
+			
 			var whatIsTracking = {}; // Find how much data is behind each category
 			whatIsTracking.map = function () { emit(this.category, 1) }
 			whatIsTracking.reduce = function (k, vals) { return vals.length }
