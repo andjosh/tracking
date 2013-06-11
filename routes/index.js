@@ -1,41 +1,12 @@
 var passport = require('passport')
     , Account = require('../models/account')
     , Datum = require('../models/datum')
-    , Category = require('../models/category');
+    , Category = require('../models/category')
+    , async = require('async');
 /*
  * GET home page.
  */
-exports.test = function(io) {
-	return function(req,res) {
-		Account.findById('51ac0652ebc3e556db000001', function(err, testUser){
-			var whatIsTracking = {}; // Find how much data is behind each category
-			whatIsTracking.map = function () { emit(this.category, 1) }
-			whatIsTracking.reduce = function (k, vals) { return vals.length }
-			whatIsTracking.out = { replace: 'whatIsTracking' }
-			whatIsTracking.verbose = true;
-			whatIsTracking.query = {account: '51ac0652ebc3e556db000001'};
-			Datum.mapReduce(whatIsTracking, function (err, model, stats) {
-			  console.log('whatIsTracking map reduce took %d ms', stats.processtime)
-			  model.find().where('value').gt(0).exec(function (err, docs) {
-			  	var whenCats = [];
-			    docs.forEach(function(doc) {
-			    	Category.findById(doc._id, function(err, cat) {
-			    		console.log(cat.name+' : '+doc.value)
-			    		whenCats.push(cat.name)
-			    	})
-			    })
-			    Category.find( function foundCategories(err, categories) {
-			      var catList = [];
-			      categories.forEach(function(cat) {
-			        catList.push('"'+cat.name+'"')
-			      }); 
-		      		res.render('index',{title: 'Track Anything', user: testUser, whenData: docs, whenCats: whenCats, categories: catList, message: req.flash('info'), error: req.flash('error')})
-		    	});
-			  })
-			})
-		});
-	}
-}
+
 exports.index = function(io) {
 	return function(req,res) {
 
@@ -62,19 +33,21 @@ exports.index = function(io) {
 			  console.log('whatIsTracking map reduce took %d ms', stats.processtime)
 			  model.find().where('value').gt(0).exec(function (err, docs) {
 			  	var whenCats = [];
-			    docs.forEach(function(doc) {
-			    	Category.findById(doc._id, function(err, cat) {
-			    		console.log(cat.name+' : '+doc.value)
-			    		whenCats.push(cat.name)
+			    async.series([
+			    	docs.forEach(function(doc) {
+				    	Category.findById(doc._id, function(err, cat) {
+				    		console.log(cat.name+' : '+doc.value)
+				    		whenCats.push(cat.name)
+				    	})
+				    }),
+				    Category.find( function foundCategories(err, categories) {
+				      var catList = [];
+				      categories.forEach(function(cat) {
+				        catList.push('"'+cat.name+'"')
+				      }); 
+			      		res.render('index',{title: 'Track Anything', user: req.user, whenData: docs, whenCats: whenCats, categories: catList, message: req.flash('info'), error: req.flash('error')})
 			    	})
-			    })
-			    Category.find( function foundCategories(err, categories) {
-			      var catList = [];
-			      categories.forEach(function(cat) {
-			        catList.push('"'+cat.name+'"')
-			      }); 
-		      		res.render('index',{title: 'Track Anything', user: req.user, whenData: docs, whenCats: whenCats, categories: catList, message: req.flash('info'), error: req.flash('error')})
-		    	});
+			    ])
 			  });
 			});
 		}
@@ -120,3 +93,38 @@ exports.index = function(io) {
 		}
   };
 };
+
+// For testing on the home page without logging in
+exports.test = function(io) {
+	return function(req,res) {
+		Account.findById('51ac0652ebc3e556db000001', function(err, testUser){
+			var whatIsTracking = {}; // Find how much data is behind each category
+			whatIsTracking.map = function () { emit(this.category, 1) }
+			whatIsTracking.reduce = function (k, vals) { return vals.length }
+			whatIsTracking.out = { replace: 'whatIsTracking' }
+			whatIsTracking.verbose = true;
+			whatIsTracking.query = {account: '51ac0652ebc3e556db000001'};
+			Datum.mapReduce(whatIsTracking, function (err, model, stats) {
+			  console.log('whatIsTracking map reduce took %d ms', stats.processtime)
+			  model.find().where('value').gt(0).exec(function (err, docs) {
+			  	var whenCats = [];
+			    async.series([
+			    	docs.forEach(function(doc) {
+				    	Category.findById(doc._id, function(err, cat) {
+				    		console.log(cat.name+' : '+doc.value)
+				    		whenCats.push(cat.name)
+				    	})
+				    }),
+				    Category.find( function foundCategories(err, categories) {
+				      var catList = [];
+				      categories.forEach(function(cat) {
+				        catList.push('"'+cat.name+'"')
+				      }); 
+			      		res.render('index',{title: 'Track Anything', user: testUser, whenData: docs, whenCats: whenCats, categories: catList, message: req.flash('info'), error: req.flash('error')})
+			    	})
+			    ])
+			  })
+			})
+		});
+	}
+}

@@ -28,6 +28,7 @@
     "socket.io":"*",
     "express-load":"*",
     "xml-digester":"*",
-    "mailgun":"*"
+    "mailgun":"*",
+    "async":"*"
   }
 }
