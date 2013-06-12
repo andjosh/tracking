@@ -26,18 +26,30 @@ exports.index = function(io) {
 
 			Datum.find({account: req.user._id}, 'category').distinct('category', function(err,foundCats){
 				var finalCats = [];
-				foundCats.forEach(function(cat){
-					Category.findById(cat, function(err, endCat){
-						finalCats.push(endCat);
-					})
-				})
-				Category.find( function foundCategories(err, categories) {
-		      var catList = [];
-		      categories.forEach(function(cat) {
-		        catList.push('"'+cat.name+'"')
-		      });
-					res.render('index',{title: 'Track Anything', user: req.user, foundCats: finalCats, categories: catList, message: req.flash('info'), error: req.flash('error')})
-				})
+				async.series([
+					function(callback){
+						foundCats.forEach(function(cat){
+							Category.findById(cat, function(err, endCat){
+								if (!endCat){
+									finalCats.push('')
+								}
+								else {
+									finalCats.push(endCat);
+								}
+								if (finalCats.length == foundCats.length){callback(null)}
+							})
+						})
+					},
+					function(callback){
+						Category.find( function foundCategories(err, categories) {
+							var catList = [];
+							categories.forEach(function(cat) {
+								catList.push('"'+cat.name+'"')
+							});
+							res.render('index',{title: 'Track Anything', user: req.user, foundCats: finalCats, categories: catList, message: req.flash('info'), error: req.flash('error')})
+						})
+					}
+				])
 			});
 		}
 		if (!req.user){
