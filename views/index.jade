@@ -67,7 +67,7 @@ block content
 			// X scale will fit values from 0-10 within pixels 0-100
 			var x = d3.scale.linear().domain([0, 10]).range([0, 500]);
 			// Y scale will fit values from 0-10 within pixels 0-100
-			var y = d3.scale.linear().domain([#{max_of_array}, 0]).range([0, 100]);
+			var y = d3.scale.linear().domain([(#{max_of_array}+1), 0]).range([0, 100]);
 
 			// create a line object that represents the SVN line we're creating
 			var line = d3.svg.line()
