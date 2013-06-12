@@ -17,11 +17,11 @@ block content
 			if user
 				if user.username
 					h2.sans Hi #{ user.username }!
-				p You are 
+				p You are
 					a#age(href="/account", class="") many
 					|  years old.
 			if (!user)
-				p.pull-center.lead Join #{ accounts } others by registering and starting on your own track today.
+				p.pull-center.lead.intro Join #{ accounts } others by registering and starting on your own track today.
 	if user
 		.second-main
 			.pure-g-r
@@ -42,12 +42,9 @@ block content
 			.pure-u-1-3.pull-center
 				h2 You are tracking
 			.pure-u-1-3
-			- var i = 0;
-			- while(i<(whenData.length)){
+			for cat in foundCats
 				.pure-u-1-5.pull-center
-					a(href="/category/#{whenData[i]._id}").btn #{whenCats[i]} 
-						small #{whenData[i].value}
-				- i = i+1;}
+					a(href="/category/#{cat._id}").btn #{cat.name}
 
 		script(src='/javascripts/add-datum.js')
 		script(src='/javascripts/index.js')
@@ -66,7 +63,7 @@ block content
 			// create a simple data array that we'll plot with a line (this array represents only the Y values, X will just be the index location)
 			var data = [#{data}];
 			console.log('max = '+#{max_of_array})
-				
+
 			// X scale will fit values from 0-10 within pixels 0-100
 			var x = d3.scale.linear().domain([0, 10]).range([0, 500]);
 			// Y scale will fit values from 0-10 within pixels 0-100
@@ -75,19 +72,19 @@ block content
 			// create a line object that represents the SVN line we're creating
 			var line = d3.svg.line()
 				// assign the X function to plot our line as we wish
-				.x(function(d,i) { 
+				.x(function(d,i) {
 					// verbose logging to show what's actually being done
 					// console.log('Plotting X value for data point: ' + d + ' using index: ' + i + ' to be at: ' + x(i) + ' using our xScale.');
 					// return the X coordinate where we want to plot this datapoint
-					return x(i); 
+					return x(i);
 				})
-				.y(function(d) { 
+				.y(function(d) {
 					// verbose logging to show what's actually being done
 					// console.log('Plotting Y value for data point: ' + d + ' to be at: ' + y(d) + " using our yScale.");
 					// return the Y coordinate where we want to plot this datapoint
-					return y(d); 
+					return y(d);
 				}).interpolate("monotone")
-		
+
 				// display the line by appending an svg:path element with the data line we created above
 				graph.append("svg:path")
 					.attr("id", "myPath")

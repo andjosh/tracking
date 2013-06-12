@@ -6,6 +6,7 @@
 body {
   font: 14px "Merriweather", Georgia, serif;
   color: #222;
+  background-color:#fff;
 }
 .sans{
   font-family: "Merriweather Sans", Helvetica, sans-serif;
@@ -57,6 +58,9 @@ input[type="button"]:hover, input[type="submit"]:hover, .btn:hover, button:hover
 .second-main {
   padding: 0 1em;
   padding-bottom: 5em;
+}
+.intro {
+  padding-top:0.6em;
 }
 .message {
 	line-height: 3em;

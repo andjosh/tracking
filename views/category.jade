@@ -1,0 +1,70 @@
+extends layout
+
+block content
+
+	if message
+		p.pull-center.message #{message}
+	if error
+		p.pull-center.error #{error}
+
+	- var day   = theData[0].date.getDate();
+	- var month = theData[0].date.getMonth() + 1;
+	if (month < 10)
+		- month = '0'+month;
+	- var year  = theData[0].date.getFullYear();
+	.pure-g-r
+		.pure-u-1-4
+		.pure-u-1-2.pull-center
+			h1.sans #{category.name} <small>since</small> #{month}/#{day}/#{year}
+		.pure-u-1-4
+
+	script(src="http://d3js.org/d3.v3.min.js")
+	#graph(style="height:200px;").pull-center
+	- var data = [];
+	- for d in theData
+		- data.push(d.quantity);
+	- var max_of_array = Math.max.apply(Math, data), min_of_array = Math.min.apply(Math, data);
+	script
+		// create an SVG element inside the #graph div that fills 100% of the div
+		var div = document.getElementById("graph");
+		var graph = d3.select("#graph").append("svg:svg").attr("width", "100%").attr("height", "100%");
+
+		// create a simple data array that we'll plot with a line (this array represents only the Y values, X will just be the index location)
+		var data = [#{data}];
+								console.log('max = '+#{max_of_array}+', min = '+#{min_of_array}+', and length = '+data.length)
+
+		// X scale will fit values from 0-10 within pixels 0-100
+		var x = d3.scale.linear().domain([0, data.length]).range([(div.offsetWidth/12), (div.offsetWidth)]);
+		// Y scale will fit values from 0-10 within pixels 0-100
+		var y = d3.scale.linear().domain([(#{max_of_array}+1), (#{min_of_array}-2)]).range([0, 200]);
+
+		// create a line object that represents the SVN line we're creating
+		var line = d3.svg.line()
+		// assign the X function to plot our line as we wish
+		.x(function(d,i) {
+		// verbose logging to show what's actually being done
+		// console.log('Plotting X value for data point: ' + d + ' using index: ' + i + ' to be at: ' + x(i) + ' using our xScale.');
+		// return the X coordinate where we want to plot this datapoint
+		return x(i);
+		})
+		.y(function(d) {
+		// verbose logging to show what's actually being done
+		// console.log('Plotting Y value for data point: ' + d + ' to be at: ' + y(d) + " using our yScale.");
+		// return the Y coordinate where we want to plot this datapoint
+		return y(d);
+		}).interpolate("monotone")
+
+		// display the line by appending an svg:path element with the data line we created above
+		graph.append("svg:path")
+		.attr("id", "myPath")
+		.attr("stroke", "steelblue")
+		.attr("stroke-width", 1)
+		.attr("fill", "none")
+		.attr("d", line(data))
+		.attr("id", "myPath")
+		//.on("mousemove", mMove)
+		.append("title");
+		function mMove(){
+		var m = d3.svg.mouse(this);
+		d3.select("#myPath").select("title").text(m);
+		};

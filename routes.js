@@ -62,9 +62,9 @@ module.exports = function (app) {
         day = req.body.birthdate[3]+req.body.birthdate[4];
         year = req.body.birthdate[6]+req.body.birthdate[7]+req.body.birthdate[8]+req.body.birthdate[9];
       }
-      var updates = { username : req.body.username, 
-                      email : req.body.email, 
-                      gender : req.body.gender, 
+      var updates = { username : req.body.username,
+                      email : req.body.email,
+                      gender : req.body.gender,
                       birthdate : new Date(year, month-1, day),
                       occupation : req.body.occupation,
                       location : req.body.location}
@@ -121,5 +121,15 @@ module.exports = function (app) {
         req.logout();
         req.flash('info', 'You have been logged out. Thanks for staying on track!')
         res.redirect('/');
+    });
+
+    app.get('/category/:id', ensureAuthenticated, function(req, res) {
+			Category.findById(req.params.id, function(err,category){
+				Datum.find({account: req.user._id, category: req.params.id},null, {sort: 'date'}, function(err, data){
+					Datum.find({category: req.params.id}, null, {sort:'date'}, function(err, bigData){
+						res.render('category', { title: 'Category', user: req.user, theData: data, bigData: bigData, category: category, message: req.flash('info'), error: req.flash('error') });
+					})
+				})
+			})
     });
 };
