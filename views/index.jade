@@ -8,23 +8,30 @@ block content
 		p.pull-center.error #{error}
 
 	#main.pure-g-r
-		.pure-u-1-2.pull-center
+		.pure-u-1-2.pull-center.no-mobile
 			h1.sans
 				a(href="/")= title
 			#infoBox
 			p#about Everyone likes a graph.
-		.pure-u-1-2
+		.pure-u-1-2.pull-center
 			if user
 				if user.username
 					h2.sans Hi #{ user.username }!
-				p
-					| You are <a href="/account" id="age">many</a> years old.
+				if user.birthdate
+					p
+						| You are <a href="/account" id="age">many</a> years old.
+				if (!user.birthdate)
+					p.lead.intro
+						| You should take a moment and <a href="/account" class="">augment your account</a>.
+					p It'll make everything easier down the road.
 			if (!user)
-				p.pull-center.lead.intro Join #{ accounts } others by registering and starting on your own track today.
+				p.lead.sans Join <a href="/register" class="btn">#{ accounts }</a> others by <a href="/register">starting</a> on your own track today.
+				p Track your progress on <strong>any</strong> metric you can quantify. <br>Compare yourself to your demographics.
 	if user
 		.second-main
 			.pure-g-r
-				.pure-u-1-2.pull-center
+				.pure-u-1-4
+				.pure-u-1-4.pull-center
 					h2 Add Data
 				.pure-u-1-4
 					form(action="/add-datum", method="post")

@@ -416,3 +416,9 @@ input[type="button"]:hover, input[type="submit"]:hover, .btn:hover, button:hover
 .modal-footer .btn-block + .btn-block {
   margin-left: 0;
 }
+
+/* Respond! */
+@media only screen and (max-width: 768px) {
+	#main{padding:1em;}
+	.no-mobile{display:none;}
+}

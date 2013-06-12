@@ -51,7 +51,7 @@ exports.index = function(io) {
 							categories.forEach(function(cat) {
 								catList.push('"'+cat.name+'"')
 							});
-							res.render('index',{title: 'Get On Track', user: req.user, foundCats: finalCats, categories: catList, message: req.flash('info'), error: req.flash('error')})
+							res.render('index',{title: 'On Track', user: req.user, foundCats: finalCats, categories: catList, message: req.flash('info'), error: req.flash('error')})
 						})
 					}
 				])
@@ -90,7 +90,7 @@ exports.index = function(io) {
 					    	console.log('Data entered '+doc._id+' : '+doc.value)
 					    })
 					    Account.count( function foundUsers(err, accounts) {
-					   		res.render('index',{title: 'Get On Track', whenData: whenDocs, accounts: accounts, message: req.flash('info'), error: req.flash('error')})
+					   		res.render('index',{title: 'On Track', whenData: whenDocs, accounts: accounts, message: req.flash('info'), error: req.flash('error')})
 					    });
 					  });
 					})
