@@ -17,9 +17,8 @@ block content
 			if user
 				if user.username
 					h2.sans Hi #{ user.username }!
-				p You are
-					a#age(href="/account", class="") many
-					|  years old.
+				p
+					| You are <a href="/account" id="age">many</a> years old.
 			if (!user)
 				p.pull-center.lead.intro Join #{ accounts } others by registering and starting on your own track today.
 	if user

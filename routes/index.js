@@ -12,22 +12,27 @@ exports.index = function(io) {
 
 		if (req.user)  {
 			console.log('User is ' + req.user.email)
-			ageTimer();
-			var userAge = new Date(req.user.birthdate);
-			function newAge() {
-				var now = new Date();
-		    var aged = Math.round((now - userAge)/(1000*60*60*24*7*52)*10000000)/10000000;
-			  io.sockets.emit('newAge'+req.user._id, { years: aged });
-			  ageTimer();
-			};
-			function ageTimer() {
-				setTimeout(newAge, 1000);
-			};
+			if (req.user.birthdate){
+				ageTimer();
+				var userAge = new Date(req.user.birthdate);
+				function newAge() {
+					var now = new Date();
+					var aged = Math.round((now - userAge)/(1000*60*60*24*7*52)*10000000)/10000000;
+					io.sockets.emit('newAge'+req.user._id, { years: aged });
+					ageTimer();
+				};
+				function ageTimer() {
+					setTimeout(newAge, 1000);
+				};
+			}
 
 			Datum.find({account: req.user._id}, 'category').distinct('category', function(err,foundCats){
+				if (err){console.log(err)}
+
 				var finalCats = [];
 				async.series([
 					function(callback){
+						if (foundCats.length == 0){console.log('got this far');callback(null);}
 						foundCats.forEach(function(cat){
 							Category.findById(cat, function(err, endCat){
 								if (!endCat){
@@ -46,7 +51,7 @@ exports.index = function(io) {
 							categories.forEach(function(cat) {
 								catList.push('"'+cat.name+'"')
 							});
-							res.render('index',{title: 'Track Anything', user: req.user, foundCats: finalCats, categories: catList, message: req.flash('info'), error: req.flash('error')})
+							res.render('index',{title: 'Get On Track', user: req.user, foundCats: finalCats, categories: catList, message: req.flash('info'), error: req.flash('error')})
 						})
 					}
 				])
@@ -85,7 +90,7 @@ exports.index = function(io) {
 					    	console.log('Data entered '+doc._id+' : '+doc.value)
 					    })
 					    Account.count( function foundUsers(err, accounts) {
-					   		res.render('index',{title: 'Track Anything', whenData: whenDocs, accounts: accounts, message: req.flash('info'), error: req.flash('error')})
+					   		res.render('index',{title: 'Get On Track', whenData: whenDocs, accounts: accounts, message: req.flash('info'), error: req.flash('error')})
 					    });
 					  });
 					})
@@ -111,7 +116,7 @@ exports.test = function(io) {
 		      categories.forEach(function(cat) {
 		        catList.push('"'+cat.name+'"')
 		      });
-					res.render('test-index',{title: 'Track Anything', user: testUser, foundCats: finalCats, message: req.flash('info'), error: req.flash('error')})
+					res.render('test-index',{title: 'Test', user: testUser, foundCats: finalCats, message: req.flash('info'), error: req.flash('error')})
 				})
 			})
 		});

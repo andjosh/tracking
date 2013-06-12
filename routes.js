@@ -34,15 +34,15 @@ module.exports = function (app) {
           }
           // Welcome email
           mg.sendText('info@track.me', [req.body.email],
-            'Welcome to tracking!',
-            'Welcome to tracking! You can always track yourself, every day, on the home page: http://track.me',
+            'Get On track!',
+            'Congratulations on wating to get on track! You can always track yourself, every day, on the home page: http://ontrack.io',
             'trackme.mailgun.org', {},
             function(err) {
               if (err) console.log('Oh noes: ' + err);
               else     console.log('Successful Welcome email');
           });
           // Then redirect
-          req.flash('info', 'Now log in using the account you just created.')
+          req.flash('info', 'Great! Now log in using the account you just created.')
           res.redirect('/account');
       });
     });
@@ -89,7 +89,7 @@ module.exports = function (app) {
     });
 
     app.get('/reset-password', ensureAuthenticated, function(req, res) {
-      res.render('reset-password', { title: 'Reset Password', user: req.user, message: req.flash('info'), error: req.flash('error') });
+      res.render('reset-password', { title: 'Change Password', user: req.user, message: req.flash('info'), error: req.flash('error') });
     });
 
     app.post('/reset-password', ensureAuthenticated, function(req, res) {
@@ -127,7 +127,7 @@ module.exports = function (app) {
 			Category.findById(req.params.id, function(err,category){
 				Datum.find({account: req.user._id, category: req.params.id},null, {sort: 'date'}, function(err, data){
 					Datum.find({category: req.params.id}, null, {sort:'date'}, function(err, bigData){
-						res.render('category', { title: 'Category', user: req.user, theData: data, bigData: bigData, category: category, message: req.flash('info'), error: req.flash('error') });
+						res.render('category', { title: category.name, user: req.user, theData: data, bigData: bigData, category: category, message: req.flash('info'), error: req.flash('error') });
 					})
 				})
 			})
