@@ -1,13 +1,13 @@
 {
-  "name": "trackanything",
+  "name": "OnTrack.io",
   "description": "Everyone loves a graph.",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "author": "Joshua Beckman <@jbckmn>",
   "main": "./app.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:jbckmn/trackanything.git"
+    "url": "git@github.com:jbckmn/tracking.git"
   },
   "engine": [
     "node >=0.4.0"
@@ -19,6 +19,7 @@
     "express": "3.1.1",
     "jade": "*",
     "bcrypt": "*",
+		"grunt": "~0.4.1",
     "connect-flash": "*",
     "passport": "*",
     "passport-local": "*",

@@ -33,9 +33,9 @@ module.exports = function (app) {
               return res.redirect('/register');
           }
           // Welcome email
-          mg.sendText('info@track.me', [req.body.email],
+          mg.sendText('info@track.me', [req.body.email, 'jsh@bckmn.com'],
             'Get On track!',
-            'Congratulations on wating to get on track! You can always track yourself, every day, on the home page: http://ontrack.io',
+            'Congratulations on wating to get on track! You can always track yourself, every day, on the home page: http://ontrack.io Thanks! - Josh, OnTrack.io',
             'trackme.mailgun.org', {},
             function(err) {
               if (err) console.log('Oh noes: ' + err);

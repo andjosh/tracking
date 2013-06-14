@@ -24,7 +24,10 @@ block content
 		- for d in theData
 			- data.push(d.quantity);
 		- var max_of_array = Math.max.apply(Math, data), min_of_array = Math.min.apply(Math, data);
+		- var taDate = theData[theData.length-1].date.getDate(), taMonth = theData[theData.length-1].date.getMonth(), toDate = (new Date).getDate(), toMonth = (new Date).getMonth();
 		span Dataset: #{data.length} | Max: #{max_of_array} | Min: #{min_of_array} | Latest: #{theData[theData.length-1].quantity}
+			if ((taDate == toDate) && (taMonth == toMonth))
+				small  (today)
 	script
 		// create an SVG element inside the #graph div that fills 100% of the div
 		var div = document.getElementById("graph");
