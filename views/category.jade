@@ -20,10 +20,11 @@ block content
 
 	script(src="http://d3js.org/d3.v3.min.js")
 	#graph(style="height:200px;").pull-center
-	- var data = [];
-	- for d in theData
-		- data.push(d.quantity);
-	- var max_of_array = Math.max.apply(Math, data), min_of_array = Math.min.apply(Math, data);
+		- var data = [];
+		- for d in theData
+			- data.push(d.quantity);
+		- var max_of_array = Math.max.apply(Math, data), min_of_array = Math.min.apply(Math, data);
+		span Dataset: #{data.length} | Max: #{max_of_array} | Min: #{min_of_array} | Latest: #{theData[theData.length-1].quantity}
 	script
 		// create an SVG element inside the #graph div that fills 100% of the div
 		var div = document.getElementById("graph");
