@@ -20,6 +20,7 @@ var express = require('express')
   	, LocalStrategy = require('passport-local').Strategy
     , index = require('./routes/index')
     , datum = require('./routes/datum')
+		, api = require('./routes/api')
     , http = require('http')
     , path = require('path')
     , io = require('socket.io');
@@ -107,6 +108,10 @@ function ensureAuthenticated(req, res, next) {
 
 // Setup routes
 require('./routes')(app);
+
+// Setup API
+app.get("/api/1/account/:key", api.viewAccount);
+app.get("/api/1/category/:category", api.viewCategory);
 
 // Routes with io
 app.get("/", index.index(io));

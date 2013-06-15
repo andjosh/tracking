@@ -115,7 +115,18 @@ exports.test = function(io) {
 					})
 				})
 			})
-			res.redirect('/');
 		})
+		Account.find( function(err, allAcct){
+			allAcct.forEach(function(a){
+				a.key = ( Math.random().toString(36).substr(2) + Math.random().toString(36).substr(2) );
+				a.save(function(err,saved){
+					if(err) {
+						throw err;
+					}
+					console.log(saved._id+' account key created')
+				})
+			})
+		})
+		res.redirect('/');
 	}
 }

@@ -88,6 +88,7 @@ input:focus, input[type="button"]:focus, input[type="submit"]:focus, .btn:focus,
   background: #fff;
   padding: 0 0.3em;
 }
+.key{color:#ddd;word-break:break-all;}.key:hover{color:#222;}
 
 /* Misc toolkit classes */
 .pull-right{
