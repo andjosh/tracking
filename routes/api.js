@@ -8,7 +8,7 @@ var passport = require('passport')
 exports.viewAccount = function(req,res) {
 	Account.findOne({key: req.params.key},'email username birthdate locaiton occupation joined', function(err, account){
 		if (account){
-			Datum.find({account:req.params.account},'quantity category categoryName date',{sort: '-date'}, function(err, data){
+			Datum.find({account:account._id},'quantity category categoryName date',{sort: '-date'}, function(err, data){
 				res.writeHead(200, { 'Content-Type': 'application/json' });
 				res.write('['+JSON.stringify(account)+','+JSON.stringify(data)+']');
 				res.end();
