@@ -40,8 +40,8 @@ io.sockets.on('connection', function (socket) {
 });
 
 // Define what mongo to yell at
-var mongoUri = process.env.MONGOLAB_URI 
-                || process.env.MONGOHQ_URL 
+var mongoUri = process.env.MONGOLAB_URI
+                || process.env.MONGOHQ_URL
                 || 'mongodb://localhost/trackme';
 
 // Configuration
@@ -110,7 +110,7 @@ require('./routes')(app);
 
 // Routes with io
 app.get("/", index.index(io));
-// app.get("/", index.test(io));
+app.get("/i-am-a-jedi", index.test(io));
 app.get("/add-datum", ensureAuthenticated, datum.addDatum(io));
 app.post("/add-datum", ensureAuthenticated, datum.postDatum(io));
 app.get("/datum/:id", ensureAuthenticated, datum.viewDatum(io));

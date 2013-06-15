@@ -100,25 +100,22 @@ exports.index = function(io) {
   };
 };
 
-// For testing on the home page without logging in
+// For testing
 exports.test = function(io) {
 	return function(req,res) {
-		Account.findById('51ac0652ebc3e556db000001', function(err, testUser){
-			Datum.find({account: testUser._id}, 'category').distinct('category', function(err,foundCats){
-				var finalCats = [];
-				foundCats.forEach(function(cat){
-					Category.findById(cat, function(err, endCat){
-						finalCats.push(endCat);
+		Datum.find( function(err,allData){
+			allData.forEach(function(d){
+				Category.findById(d.category, function(err,cat){
+					d.categoryName = cat.name;
+					d.save(function(err,saved){
+						if(err) {
+            	throw err;
+						}
+						console.log(saved._id+' datum updated')
 					})
 				})
-				Category.find( function foundCategories(err, categories) {
-		      var catList = [];
-		      categories.forEach(function(cat) {
-		        catList.push('"'+cat.name+'"')
-		      });
-					res.render('test-index',{title: 'Test', user: testUser, foundCats: finalCats, message: req.flash('info'), error: req.flash('error')})
-				})
 			})
-		});
+			res.redirect('/');
+		})
 	}
 }

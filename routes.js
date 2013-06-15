@@ -18,6 +18,14 @@ function ensureAuthenticated(req, res, next) {
 
 module.exports = function (app) {
 
+		app.get('/my-data', ensureAuthenticated, function(req, res){
+			Datum.find({account: req.user._id},'id quantity date categoryName', function(err, theData){
+				res.writeHead(200, { 'Content-Type': 'application/json' });
+				res.write(JSON.stringify(theData));
+				res.end();
+			})
+		})
+
     app.get('/register', function(req, res) {
         res.render('register', { title: 'Register', user: req.user, message: req.flash('info'), error: req.flash('error') });
     });

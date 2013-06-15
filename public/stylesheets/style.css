@@ -52,6 +52,9 @@ input[type="submit"]{
 input[type="button"]:hover, input[type="submit"]:hover, .btn:hover, button:hover{
 	background: #eee;
 }
+input:focus, input[type="button"]:focus, input[type="submit"]:focus, .btn:focus, button:focus{
+	outline: none;
+}
 #main {
 	padding: 5em 1em;
 }

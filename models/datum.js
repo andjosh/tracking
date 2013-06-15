@@ -8,6 +8,7 @@ var mongoose = require('mongoose'),
 var Datum = new Schema({
     quantity: { type: Number },
     category: { type: Schema.Types.ObjectId, ref: 'Category' },
+		categoryName: { type: String },
     account: { type: Schema.Types.ObjectId, ref: 'Account' },
     date: { type: Date, default: Date.now }
 });
