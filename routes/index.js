@@ -28,11 +28,9 @@ exports.index = function(io) {
 
 			Datum.find({account: req.user._id}, 'category').distinct('category', function(err,foundCats){
 				if (err){console.log(err)}
-
 				var finalCats = [];
 				async.series([
 					function(callback){
-						if (foundCats.length == 0){console.log('got this far');callback(null);}
 						foundCats.forEach(function(cat){
 							Category.findById(cat, function(err, endCat){
 								if (!endCat){
@@ -59,7 +57,7 @@ exports.index = function(io) {
 		}
 		if (!req.user){
 			var whatIsTracking = {}; // Find how much data is behind each category
-			whatIsTracking.map = function () { emit(this.category, 1) }
+			whatIsTracking.map = function () { emit(this.categoryName, 1) }
 			whatIsTracking.reduce = function (k, vals) { return vals.length }
 			whatIsTracking.out = { replace: 'whatIsTracking' }
 			whatIsTracking.verbose = true;
@@ -67,9 +65,7 @@ exports.index = function(io) {
 			  console.log('whatIsTracking map reduce took %d ms', stats.processtime)
 			  model.find().where('value').gt(0).exec(function (err, docs) {
 			    docs.forEach(function(doc) {
-			    	Category.findById(doc._id, function(err, cat) {
-			    		console.log(cat.name+' : '+doc.value)
-			    	})
+			    	console.log(doc._id+' : '+doc.value)
 			    })
 			    var whenTracking = {}; // Find when data is being tracked/entered
 					whenTracking.map = function () { emit(

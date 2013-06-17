@@ -8,11 +8,21 @@ block content
 		p.pull-center.error #{error}
 
 	#main.pure-g-r
-		.pure-u-1-2.pull-center.no-mobile
+		.pure-u-1-2.pull-center
 			h1.sans
 				a(href="/")= title
 			#infoBox
 			p#about Everyone likes a graph.
+			if (!user)
+				form(action="/login", method="post")
+					.pure-g-r
+						.pure-u-1-4#username
+							input(type="email", name="username", placeholder="Email", autofocus="autofocus")
+						.pure-u-1-4#password
+							input(type="password", name="password", placeholder="Password")
+						.pure-g-r
+						.pure-u-1-2#submit
+							input(type="submit", value="Log In")
 		.pure-u-1-2.pull-center
 			if user
 				if user.username
@@ -27,6 +37,7 @@ block content
 			if (!user)
 				p.lead.sans Join #{ accounts } others by <a href="/register" class="btn">starting</a> on your own track today.
 				p Track your progress on <strong>any</strong> metric you can quantify. <br>Compare yourself to your demographics.
+
 	if user
 		.second-main
 			.pure-g-r

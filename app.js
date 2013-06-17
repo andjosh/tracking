@@ -112,6 +112,9 @@ require('./routes')(app);
 // Setup API
 app.get("/api/1/account/:key", api.viewAccount);
 app.get("/api/1/category/:category", api.viewCategory);
+app.get("/api/1/categories", api.allCategories);
+app.post("/api/1/add/:key", api.makeDatum(io));
+app.delete("/api/1/datum/:id/:key", api.deleteDatum);
 
 // Routes with io
 app.get("/", index.index(io));
