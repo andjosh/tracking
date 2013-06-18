@@ -1,10 +1,9 @@
 @import url("http://fonts.googleapis.com/css?family=Merriweather:400,300,700");
 @import url("http://fonts.googleapis.com/css?family=Merriweather+Sans:400,300,700");
-@import url("http://yui.yahooapis.com/pure/0.1.0/base-min.css");
-@import url("http://yui.yahooapis.com/pure/0.1.0/grids-min.css");
-@import url("http://yui.yahooapis.com/pure/0.1.0/menus-min.css");
+@import url("http://yui.yahooapis.com/pure/0.2.0/pure-min.css");
 body {
   font: 14px "Merriweather", Georgia, serif;
+	line-height:1.6em;
   color: #222;
   background-color:#fff;
 }
@@ -55,9 +54,11 @@ input[type="button"]:hover, input[type="submit"]:hover, .btn:hover, button:hover
 input:focus, input[type="button"]:focus, input[type="submit"]:focus, .btn:focus, button:focus{
 	outline: none;
 }
+code {background-color:#eee;padding:0.4em 0.6em;}
 #main {
 	padding: 5em 1em;
 }
+#docs {padding:2em;}
 .second-main {
   padding: 0 1em;
   padding-bottom: 5em;
@@ -89,6 +90,10 @@ input:focus, input[type="button"]:focus, input[type="submit"]:focus, .btn:focus,
   padding: 0 0.3em;
 }
 .key{color:#ddd;word-break:break-all;}.key:hover{color:#222;}
+.get{color:#3e45bb;}
+.delete{color:#bb3e45;}
+.put{color:#3ebbb5;}
+.post{color:#bbb53e;}
 
 /* Misc toolkit classes */
 .pull-right{

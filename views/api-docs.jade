@@ -1,0 +1,89 @@
+extends layout
+
+block content
+
+	if message
+		p.pull-center.message #{message}
+	if error
+		p.pull-center.error #{error}
+
+	#docs.pure-g-r.yui3-normalized
+		.pure-u-1-4
+		.pure-u-1-2.pull-center
+			h1.sans
+				a(href="")= title
+		.pure-u-1-4
+
+		.pure-u-1-3
+		.pure-u-1-3
+			p Your API key: <code>#{user.key}</code>
+			h3 General Guidelines
+			p Unless otherwise specified, API calls must include a user API access key passed as an element in the URL.
+			p All search queries must be passed as URL parameters on each search request.
+			p Please do not abuse the API. We can tell. And we will turn off the lights on you if we find you doing it.
+		.pure-u-1-3
+
+		.pure-u-1-4
+			p
+				code <span class="get">GET:</span> /api/1/account/:key
+		.pure-u-3-4
+			h3 Access information about your account.
+			p You will only have access to account-specific information about your single account.
+			p Example response: <a href="/api/1/account/#{user.key}">/api/1/account/#{user.key}</a>
+
+		.pure-u-1-4
+			p
+				code <span class="post">POST:</span> /api/1/add/:key
+		.pure-u-3-4
+			h3 Add a single datum under an account.
+			table.pure-table.pure-table-horizontal
+				caption Attributes required upon data creation
+				thead
+					tr
+						td Attribute
+						td Description
+						td Form
+						td Presence
+				tr
+					td <code>quantity</code>
+					td A number quantifying the datum being entered
+					td FLOAT
+					td required
+				tr
+					td <code>category</code>
+					td The category name under which this datum should be filed
+					td STRING
+					td required
+			p Example response:
+
+		.pure-u-1-4
+			p
+			code <span class="delete">DELETE:</span> /api/1/datum/:id/:key
+		.pure-u-3-4
+			h3 Remove/delete a single datum element.
+			p Example response:
+
+		.pure-u-1-4
+			p
+				code <span class="get">GET:</span> /api/1/category/:id
+		.pure-u-3-4
+			h3 View all data archives under a single category.
+			p NOTE: This endpoint does not require a key for access.
+			p Example response: <a href="/api/1/category/">/api/1/category/</a>
+
+		.pure-u-1-4
+			p
+				code <span class="get">GET:</span> /api/1/categories
+		.pure-u-3-4
+			h3 View a list of all currently active categories.
+			p NOTE: This endpoint does not require a key for access.
+			p Example response: <a href="/api/1/categories">/api/1/categories</a>
+
+		.pure-u-1-4
+			p
+				code <span class="get">GET:</span> /api/version
+		.pure-u-3-4
+			h3 View API version information.
+			p At this enpoint are listed two versions of the API. The bleeding edge version should only be used and queried for feature-testing purposes. The stable version should be used generally and for all production instances.
+			p NOTE: This endpoint does not require a key for access.
+			p Example response: <a href="/api/version">/api/version</a>

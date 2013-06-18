@@ -10,7 +10,7 @@ exports.viewAccount = function(req,res) {
 		if (account){
 			Datum.find({account:account._id},'quantity category categoryName date',{sort: '-date'}, function(err, data){
 				res.writeHead(200, { 'Content-Type': 'application/json' });
-				res.write('['+JSON.stringify(account)+','+JSON.stringify(data)+']');
+				res.write('{"account":'+JSON.stringify(account)+',"dataCount":'+data.length+', "data":'+JSON.stringify(data)+'}');
 				res.end();
 			})
 		}
@@ -27,7 +27,7 @@ exports.viewCategory = function(req,res) {
 		Datum.find({category:req.params.category},'quantity category categoryName date account',{sort: '-date'}, function(err, data){
 			Account.populate(data, {path: 'account', select: 'location birthdate occupation gender'}, function(err, data){
 				res.writeHead(200, { 'Content-Type': 'application/json' });
-				res.write('['+JSON.stringify(category)+','+JSON.stringify(data)+']');
+				res.write('{"category":'+JSON.stringify(category)+',"data":'+JSON.stringify(data)+'}');
 				res.end();
 			})
 		})
@@ -37,7 +37,7 @@ exports.viewCategory = function(req,res) {
 exports.allCategories = function(req,res){
 	Category.find(null, 'name', function(err, categories){
 		res.writeHead(200, { 'Content-Type': 'application/json' });
-		res.write(JSON.stringify(categories));
+		res.write('{"count":'+categories.length+', "categories":'+JSON.stringify(categories)+'}');
 		res.end();
 	})
 }
@@ -133,3 +133,13 @@ exports.makeDatum = function(io){
 		})
 	};
 };
+
+exports.apiVersion = function(req,res){
+	res.writeHead(200, { 'Content-Type': 'application/json' });
+	res.write('{ "stable":{"version":"1.0.0"}, "bleeding":{"version":"1.0.0"} }');
+	res.end();
+}
+
+exports.apiDocs = function(req,res){
+	res.render('api-docs',{title: 'API Docs', user: req.user, message: req.flash('info'), error: req.flash('error')})
+}
