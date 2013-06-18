@@ -143,3 +143,18 @@ exports.apiVersion = function(req,res){
 exports.apiDocs = function(req,res){
 	res.render('api-docs',{title: 'API Docs', user: req.user, message: req.flash('info'), error: req.flash('error')})
 }
+
+exports.regenKey = function(req,res){
+	Account.findById(req.user._id, function(err, account){
+		account.key = ( Math.random().toString(36).substr(2) + Math.random().toString(36).substr(2) )
+		account.save(function(err,resultAccount){
+			if(err) {
+				throw err;
+				req.flash('error', 'Apologies! A new API key was not generated.')
+				res.redirect("/api/docs");
+			}
+			req.flash('info', 'New API key generated. Your old key has been invalidated.')
+			res.redirect("/api/docs");
+		})
+	})
+}

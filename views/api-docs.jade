@@ -17,6 +17,8 @@ block content
 		.pure-u-1-3
 		.pure-u-1-3
 			p Your API key: <code>#{user.key}</code>
+			.pull-right
+				small <a href="/api/regenerate" onClick="return confirm('Do you really want to invalidate your old key?')">Regenerate key</a>
 			h3 General Guidelines
 			p Unless otherwise specified, API calls must include a user API access key passed as an element in the URL.
 			p All search queries must be passed as URL parameters on each search request.
