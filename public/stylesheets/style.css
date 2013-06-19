@@ -55,7 +55,7 @@ input:focus, input[type="button"]:focus, input[type="submit"]:focus, .btn:focus,
 	outline: none;
 }
 code {background-color:#eee;padding:0.4em 0.6em;}
-#main {
+#main, .main {
 	padding: 5em 1em;
 }
 #docs {padding:2em;}

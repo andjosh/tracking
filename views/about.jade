@@ -1,0 +1,20 @@
+extends layout
+
+block content
+
+	if message
+		p.pull-center.message #{message}
+	if error
+		p.pull-center.error #{error}
+
+	#main.pure-g-r
+		.pure-u-1-2.pull-center
+			h1.sans
+				a(href="/") On Track
+			p#about Everyone likes a graph.
+			h2.sans #{title}
+		.pure-u-1-2
+			h4 Harness the power of insight into your own data, along with the data of your demographic.
+			p Everyone has access to your data, but <strong>only you</strong> have access to your personal information.
+			p Your data points will merge with the societal sea of data and allow for a level of demographic measurement and assessment never before possible across the population.
+			p The sociological, medical and biological research that is possible with such an organized, comprehensive and quantitative view of the population is unavailable with current data collection.

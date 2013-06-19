@@ -30,6 +30,10 @@ module.exports = function (app) {
         res.render('register', { title: 'Register', user: req.user, message: req.flash('info'), error: req.flash('error') });
     });
 
+		app.get('/about', function(req, res) {
+        res.render('about', { title: 'About', user: req.user, message: req.flash('info'), error: req.flash('error') });
+    });
+
     app.post('/register', function(req, res) {
       if (req.body.password != req.body.password_conf) {
         req.flash('error', 'Password and password confirmation must match.')
@@ -92,8 +96,15 @@ module.exports = function (app) {
     });
 
     app.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureFlash: 'Invalid email or password.' }), function(req, res) {
-        req.flash('info', 'Hi there!')
-        res.redirect('/');
+
+        if (req.user.birthdate){
+					req.flash('info', 'Hi there!')
+					res.redirect('/');
+				}
+				if (!req.user.birthdate){
+					req.flash('info', 'Hi there! You should probably fill in some information about yourself.')
+					res.redirect('/account');
+				}
     });
 
     app.get('/reset-password', ensureAuthenticated, function(req, res) {
