@@ -77,7 +77,7 @@ exports.index = function(io) {
 							, 1) }
 					whenTracking.reduce = function (k, vals) { return vals.length }
 					whenTracking.out = { replace: 'whenTracking' }
-					whenTracking.limit = 30;
+					// whenTracking.limit = 30;
 					whenTracking.verbose = true;
 					Datum.mapReduce(whenTracking, function (err, model, stats) {
 					  console.log('whenTracking map reduce took %d ms', stats.processtime)
