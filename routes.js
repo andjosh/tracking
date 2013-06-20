@@ -15,6 +15,10 @@ function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
   res.redirect('/login')
 }
+function ensureAdmin(req, res, next){
+	if (req.user.admin == true){ return next(); }
+	res.redirect('/')
+}
 
 module.exports = function (app) {
 
@@ -151,4 +155,8 @@ module.exports = function (app) {
 				})
 			})
     });
+
+		app.get('/backend', ensureAdmin, function(req,res){
+			res.render('backEnd', { title: 'Welcome Back', user: req.user, message: req.flash('info'), error: req.flash('error') });
+		})
 };

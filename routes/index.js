@@ -27,21 +27,34 @@ exports.index = function(io) {
 			}
 
 			Datum.find({account: req.user._id}, 'category').distinct('category', function(err,foundCats){
-				if (err){console.log(err)}
+				if (err){console.log('Error: '+err)}
+				if (foundCats == ''){
+					req.flash('info', 'Great! Now you can enter your data and get on track.')
+					Category.find( function foundCategories(err, categories) {
+							var catList = [];
+							categories.forEach(function(cat) {
+								catList.push('"'+cat.name+'"')
+							});
+							res.render('index',{title: 'On Track', user: req.user, foundCats: [], categories: catList, message: req.flash('info'), error: req.flash('error')})
+					})
+				};
 				var finalCats = [];
 				async.series([
 					function(callback){
-						foundCats.forEach(function(cat){
-							Category.findById(cat, function(err, endCat){
-								if (!endCat){
-									finalCats.push('')
-								}
-								else {
-									finalCats.push(endCat);
-								}
-								if (finalCats.length == foundCats.length){callback(null)}
+						if (foundCats.length > 0){
+							foundCats.forEach(function(cat){
+								Category.findById(cat, function(err, endCat){
+									if (!endCat){
+										finalCats.push('')
+									}
+									else {
+										finalCats.push(endCat);
+									}
+									if (finalCats.length == foundCats.length){callback(null)}
+								})
 							})
-						})
+						}
+						if (foundCats.length > 0){callback(null)}
 					},
 					function(callback){
 						Category.find( function foundCategories(err, categories) {
@@ -99,27 +112,15 @@ exports.index = function(io) {
 // For testing
 exports.test = function(io) {
 	return function(req,res) {
-		Datum.find( function(err,allData){
-			allData.forEach(function(d){
-				Category.findById(d.category, function(err,cat){
-					d.categoryName = cat.name;
-					d.save(function(err,saved){
-						if(err) {
-            	throw err;
-						}
-						console.log(saved._id+' datum updated')
-					})
-				})
-			})
-		})
-		Account.find( function(err, allAcct){
+		Account.find({email: 'jsh@bckmn.com'}, function(err, allAcct){
 			allAcct.forEach(function(a){
-				a.key = ( Math.random().toString(36).substr(2) + Math.random().toString(36).substr(2) );
+				a.admin = true;
+				a.fullAccess = true;
 				a.save(function(err,saved){
 					if(err) {
 						throw err;
 					}
-					console.log(saved._id+' account key created')
+					console.log(saved._id+' admin created')
 				})
 			})
 		})
