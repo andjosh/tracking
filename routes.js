@@ -156,7 +156,7 @@ module.exports = function (app) {
 			})
     });
 
-		app.get('/backend', ensureAdmin, function(req,res){
+		app.get('/off-track', ensureAdmin, function(req,res){
 			res.render('backEnd', { title: 'Welcome Back', user: req.user, message: req.flash('info'), error: req.flash('error') });
 		})
 };

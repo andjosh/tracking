@@ -28,16 +28,6 @@ exports.index = function(io) {
 
 			Datum.find({account: req.user._id}, 'category').distinct('category', function(err,foundCats){
 				if (err){console.log('Error: '+err)}
-				if (foundCats == ''){
-					req.flash('info', 'Great! Now you can enter your data and get on track.')
-					Category.find( function foundCategories(err, categories) {
-							var catList = [];
-							categories.forEach(function(cat) {
-								catList.push('"'+cat.name+'"')
-							});
-							res.render('index',{title: 'On Track', user: req.user, foundCats: [], categories: catList, message: req.flash('info'), error: req.flash('error')})
-					})
-				};
 				var finalCats = [];
 				async.series([
 					function(callback){
@@ -65,7 +55,17 @@ exports.index = function(io) {
 							res.render('index',{title: 'On Track', user: req.user, foundCats: finalCats, categories: catList, message: req.flash('info'), error: req.flash('error')})
 						})
 					}
-				])
+				]);
+				if (foundCats == ''){
+					req.flash('info', 'Great! Now you can enter your data and get on track.')
+					Category.find( function foundCategories(err, categories) {
+							var catList = [];
+							categories.forEach(function(cat) {
+								catList.push('"'+cat.name+'"')
+							});
+							res.render('index',{title: 'On Track', user: req.user, foundCats: [], categories: catList, message: req.flash('info'), error: req.flash('error')})
+					})
+				};
 			});
 		}
 		if (!req.user){
