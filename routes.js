@@ -49,7 +49,7 @@ module.exports = function (app) {
               return res.redirect('/register');
           }
           // Welcome email
-          mg.sendText('info@track.me', [req.body.email, 'jsh@bckmn.com'],
+          mg.sendText('info@ontrack.io', [req.body.email, 'jsh@bckmn.com'],
             'Get On track!',
             'Congratulations on wating to get on track! You can always track yourself, every day, on the home page: http://ontrack.io Thanks! - Josh, OnTrack.io',
             'trackme.mailgun.org', {},
@@ -144,6 +144,23 @@ module.exports = function (app) {
         req.logout();
         req.flash('info', 'You have been logged out. Thanks for staying on track!')
         res.redirect('/');
+    });
+
+		app.get('/contact', function(req, res) {
+      res.render('contact', { title: 'Contact', user: req.user, message: req.flash('info'), error: req.flash('error') });
+    });
+
+		app.post('/contact', function(req, res) {
+			mg.sendText(req.body.sender, ['jsh@bckmn.com'],
+									'Contact from OnTrack.io',
+									req.body.words,
+									'trackme.mailgun.org', {},
+									function(err) {
+										if (err) console.log('Oh noes: ' + err);
+										else     console.log('Successful Contact email');
+									});
+			req.flash('info', 'Your message has been sealed with a kiss and sent!')
+      res.redirect('/');
     });
 
     app.get('/category/:id', ensureAuthenticated, function(req, res) {

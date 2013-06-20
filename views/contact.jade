@@ -1,0 +1,24 @@
+extends layout
+
+block content
+
+	if message
+		p.pull-center.message #{message}
+	if error
+		p.pull-center.error #{error}
+
+	#main.pure-g-r
+		.pure-u-1-2.pull-center
+			h1.sans
+				a(href="/") On Track
+			#infoBox
+			p#about Everyone likes a graph.
+			h2.sans #{title}
+		.pure-u-1-2.pull-center
+			form(action="/contact", method="post")
+				if user
+					input(type="email", name="sender", placeholder="Your email", value="#{ user.email }")
+				if (!user)
+					input(type="text", name="sender", placeholder="Your email")
+				textarea(rows="10", name="words", placeholder="Your words go here...")
+				input(type="submit", value="Seal it and send it")

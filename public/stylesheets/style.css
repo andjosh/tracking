@@ -28,6 +28,12 @@ input, .btn, button{
 	display: inline-block;
 	margin: 1em 0;
 }
+textarea {
+	font-family: "Merriweather Sans", Helvetica, sans-serif;
+	font-size: inherit;
+	border:1px solid #aaa;
+	width: 100%;
+}
 input, .btn-full, button{
 	width: 100%;
 }
@@ -51,7 +57,7 @@ input[type="submit"]{
 input[type="button"]:hover, input[type="submit"]:hover, .btn:hover, button:hover{
 	background: #eee;
 }
-input:focus, input[type="button"]:focus, input[type="submit"]:focus, .btn:focus, button:focus{
+input:focus, input[type="button"]:focus, input[type="submit"]:focus, .btn:focus, button:focus, textarea:focus{
 	outline: none;
 }
 code {background-color:#eee;padding:0.4em 0.6em;}
