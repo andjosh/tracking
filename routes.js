@@ -176,7 +176,9 @@ module.exports = function (app) {
 		})
 		app.get('/off-track/accounts/:id', ensureAdmin, function(req,res){
 			Account.findById(req.params.id, function(err,account){
-				res.render('offTrackAccount', { title: 'Welcome Back', user: req.user, account: account, message: req.flash('info'), error: req.flash('error') });
+				Datum.find({account: req.params.id}, function(err,data){
+					res.render('offTrackAccount', { title: 'Welcome Back', user: req.user, data: data, account: account, message: req.flash('info'), error: req.flash('error') });
+				})
 			})
 		})
 		app.get('/off-track/categories/:id', ensureAdmin, function(req,res){
@@ -187,37 +189,53 @@ module.exports = function (app) {
 			})
 		})
 		app.post('/off-track/accounts/:id', ensureAdmin, function(req,res){
-			var conditions = { _id: req.params.id };
-			Account.remove(conditions, function upDated(err) {
+			if (req.body.password){var conditions = { admin: req.body.admin, fullAccess: req.body.fullAccess };}
+			if (!req.body.password){var conditions = { admin: req.body.admin, fullAccess: req.body.fullAccess };}
+			Account.update({ _id: req.params.id}, conditions, function upDated(err) {
 				if(err) {
-					req.flash('error', 'There was a problem in saving that information')
+					req.flash('error', 'There was a problem in saving that information');
 					res.redirect('/off-track/accounts/'+req.params.id);
+					throw err;
 				}
+				req.flash('info', 'Updated!')
+				res.redirect('/off-track/accounts/'+req.params.id);
 			});
-			req.flash('info', 'Updated!')
-			res.redirect('/off-track');
 		})
 		app.post('/off-track/categories/:id', ensureAdmin, function(req,res){
-			var conditions = { _id: req.params.id };
-			Category.update(conditions, function upDated(err) {
-				if(err) {
-					req.flash('error', 'There was a problem in saving that information')
-					res.redirect('/off-track/categories/'+req.params.id);
-				}
-			});
-			req.flash('info', 'Updated!')
-			res.redirect('/off-track');
+			Category.findById(req.body.migrateId, function(err,category){
+				Datum.find({category: req.params.id}, function(err, data){
+					data.forEach(function(datum){
+						datum.category = req.body.migrateId;
+						datum.categoryName = category.name;
+						datum.save(function(err,saved){
+							if (err){
+								req.flash('error', 'There was a problem in saving that information')
+								res.redirect('/off-track/categories/'+req.params.id);
+								throw err;
+							}
+							req.flash('info', 'Updated!')
+							res.redirect('/off-track/categories/'+req.params.id);
+						})
+					})
+				})
+			})
 		})
 		app.get('/off-track/accounts/delete/:id', ensureAdmin, function(req,res){
 			var conditions = { _id: req.params.id };
 			Account.remove(conditions, function upDated(err) {
 				if(err) {
-					req.flash('error', 'There was a problem in deleting that information')
+					req.flash('error', 'There was a problem in deleting that account')
 					res.redirect('/off-track/accounts/'+req.params.id);
 				}
+				Datum.remove({account: req.params.id}, function deleted(err) {
+					if(err) {
+						req.flash('error', 'There was a problem in deleting that account data')
+						res.redirect('/off-track/accounts/'+req.params.id);
+					}
+					req.flash('info', 'Removed!')
+					res.redirect('/off-track');
+				})
 			});
-			req.flash('info', 'Removed!')
-			res.redirect('/off-track');
 		})
 		app.get('/off-track/categories/delete/:id', ensureAdmin, function(req,res){
 			var conditions = { _id: req.params.id };
@@ -226,8 +244,8 @@ module.exports = function (app) {
 					req.flash('error', 'There was a problem in deleting that information')
 					res.redirect('/off-track/categories/'+req.params.id);
 				}
+				req.flash('info', 'Removed!')
+				res.redirect('/off-track');
 			});
-			req.flash('info', 'Removed!')
-			res.redirect('/off-track');
 		})
 };

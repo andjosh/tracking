@@ -12,5 +12,9 @@ block content
 		.pure-u-1-3.pull-center
 			h1
 				a(href="/off-track/categories/#{category._id}") #{category.name}
+			p #{data.length} data
+			form(action="/off-track/categories/#{category._id}", method="post")
+				input(type="text", name="migrateId", placeholder="Migrate to this Id")
+				input(type="submit", value="Migrate")
 			small
 				a(href="/off-track/categories/delete/#{category._id}", onClick="return confirm('Do you really want to delete this?')", class="btn error") Delete

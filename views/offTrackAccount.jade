@@ -12,5 +12,21 @@ block content
 		.pure-u-1-3.pull-center
 			h1
 				a(href="/off-track/accounts/#{account._id}") #{account.email}
+			p #{data.length} data
+			form(action="/off-track/accounts/#{account._id}", method="post")
+				input(type="text", name="password", placeholder="New Password")
+				label
+					if (account.admin == true)
+						input(type="checkbox", name="admin", checked)
+					if (account.admin != true)
+						input(type="checkbox", name="admin")
+					| Admin
+				label
+					if (account.fullAccess == true)
+						input(type="checkbox", name="fullAccess", checked)
+					if (account.fullAccess != true)
+						input(type="checkbox", name="fullAccess")
+					| Full API
+				input(type="submit", value="Update")
 			small
 				a(href="/off-track/accounts/delete/#{account._id}", onClick="return confirm('Do you really want to delete this?')", class="btn error") Delete
