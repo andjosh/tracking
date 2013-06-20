@@ -1,0 +1,16 @@
+extends layout
+
+block content
+
+	if message
+		p.pull-center.message #{message}
+	if error
+		p.pull-center.error #{error}
+
+	#main.pure-g-r
+		.pure-u-1-3
+		.pure-u-1-3.pull-center
+			h1
+				a(href="/off-track/accounts/#{account._id}") #{account.email}
+			small
+				a(href="/off-track/accounts/delete/#{account._id}", onClick="return confirm('Do you really want to delete this?')", class="btn error") Delete

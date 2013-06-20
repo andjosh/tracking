@@ -16,7 +16,7 @@ function ensureAuthenticated(req, res, next) {
   res.redirect('/login')
 }
 function ensureAdmin(req, res, next){
-	if (req.user.admin == true){ return next(); }
+	if (req.user && (req.user.admin == true)){ return next(); }
 	res.redirect('/')
 }
 
@@ -157,6 +157,77 @@ module.exports = function (app) {
     });
 
 		app.get('/off-track', ensureAdmin, function(req,res){
-			res.render('backEnd', { title: 'Welcome Back', user: req.user, message: req.flash('info'), error: req.flash('error') });
+			Account.find( function(err,accounts){
+				Category.find(function(err,categories){
+					res.render('offTrack', { title: 'Welcome Back', user: req.user, accounts: accounts, categories: categories, message: req.flash('info'), error: req.flash('error') });
+				})
+			})
+		})
+		app.get('/off-track/accounts', ensureAdmin, function(req,res){
+			Account.find( function(err,accounts){
+				res.render('offTrackAccounts', { title: 'Welcome Back', user: req.user, accounts: accounts, message: req.flash('info'), error: req.flash('error') });
+
+			})
+		})
+		app.get('/off-track/categories', ensureAdmin, function(req,res){
+			Category.find(function(err,categories){
+				res.render('offTrackCategories', { title: 'Welcome Back', user: req.user, categories: categories, message: req.flash('info'), error: req.flash('error') });
+			})
+		})
+		app.get('/off-track/accounts/:id', ensureAdmin, function(req,res){
+			Account.findById(req.params.id, function(err,account){
+				res.render('offTrackAccount', { title: 'Welcome Back', user: req.user, account: account, message: req.flash('info'), error: req.flash('error') });
+			})
+		})
+		app.get('/off-track/categories/:id', ensureAdmin, function(req,res){
+			Category.findById(req.params.id, function(err,category){
+				Datum.find({category:req.params.id}, function(err,data){
+					res.render('offTrackCategory', { title: 'Welcome Back', user: req.user, data: data, category: category, message: req.flash('info'), error: req.flash('error') });
+				})
+			})
+		})
+		app.post('/off-track/accounts/:id', ensureAdmin, function(req,res){
+			var conditions = { _id: req.params.id };
+			Account.remove(conditions, function upDated(err) {
+				if(err) {
+					req.flash('error', 'There was a problem in saving that information')
+					res.redirect('/off-track/accounts/'+req.params.id);
+				}
+			});
+			req.flash('info', 'Updated!')
+			res.redirect('/off-track');
+		})
+		app.post('/off-track/categories/:id', ensureAdmin, function(req,res){
+			var conditions = { _id: req.params.id };
+			Category.update(conditions, function upDated(err) {
+				if(err) {
+					req.flash('error', 'There was a problem in saving that information')
+					res.redirect('/off-track/categories/'+req.params.id);
+				}
+			});
+			req.flash('info', 'Updated!')
+			res.redirect('/off-track');
+		})
+		app.get('/off-track/accounts/delete/:id', ensureAdmin, function(req,res){
+			var conditions = { _id: req.params.id };
+			Account.remove(conditions, function upDated(err) {
+				if(err) {
+					req.flash('error', 'There was a problem in deleting that information')
+					res.redirect('/off-track/accounts/'+req.params.id);
+				}
+			});
+			req.flash('info', 'Removed!')
+			res.redirect('/off-track');
+		})
+		app.get('/off-track/categories/delete/:id', ensureAdmin, function(req,res){
+			var conditions = { _id: req.params.id };
+			Category.remove(conditions, function upDated(err) {
+				if(err) {
+					req.flash('error', 'There was a problem in deleting that information')
+					res.redirect('/off-track/categories/'+req.params.id);
+				}
+			});
+			req.flash('info', 'Removed!')
+			res.redirect('/off-track');
 		})
 };
