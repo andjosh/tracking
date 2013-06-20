@@ -31,7 +31,6 @@ exports.index = function(io) {
 				var finalCats = [];
 				async.series([
 					function(callback){
-						if (foundCats.length > 0){
 							foundCats.forEach(function(cat){
 								Category.findById(cat, function(err, endCat){
 									if (!endCat){
@@ -43,8 +42,6 @@ exports.index = function(io) {
 									if (finalCats.length == foundCats.length){callback(null)}
 								})
 							})
-						}
-						if (foundCats.length > 0){callback(null)}
 					},
 					function(callback){
 						Category.find( function foundCategories(err, categories) {
