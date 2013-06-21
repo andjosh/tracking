@@ -98,56 +98,59 @@ exports.addDatum = function(io) {
 
 exports.postDatum = function(io) {
   return function(req, res){
-    Category.findOne({'name': req.body.category}, function(err, categoryFound) {
-      if (err) { return next(err); }
-      if (!categoryFound) {
-        // Create category and datum, redirect/return
-        var newCategory = new Category();
-        newCategory.name = req.body.category;
-        // Add datum here
-        newCategory.save(function(err, resultCategory){
-          if(err) {
-            throw err;
-          }
-          console.log(resultCategory.name+' category created')
-          // Emit the new categories for all to use
-          Category.find( function foundCategories(err, categories) {
-            var catList = [];
-            categories.forEach(function(cat) {
-              catList.push('"'+cat.name+'"')
-            });
-            io.sockets.emit('newCategories', { names: catList });
-          });
-        });
-        var newDatum = new Datum();
-        newDatum.quantity = req.body.quantity;
-        newDatum.category = newCategory._id;
-				newDatum.categoryName = newCategory.name;
-        newDatum.account  = req.user._id;
-        newDatum.save(function(err, resultDatum){
-          if(err) {
-            throw err;
-          }
-          console.log(resultDatum._id+' datum created')
-        });
-      }
-      if (categoryFound) {
-        console.log('Category '+categoryFound._id+' found')
-        // Create dataum with account and category
-        var newDatum = new Datum();
-        newDatum.quantity = req.body.quantity;
-        newDatum.category = categoryFound._id;
-				newDatum.categoryName = categoryFound.name;
-        newDatum.account  = req.user._id;
-        newDatum.save(function(err, resultDatum){
-          if(err) {
-            throw err;
-          }
-          console.log(resultDatum._id+' datum created')
-        });
-      }
-      req.flash('info', 'Data tracked!')
-      res.redirect('/')
-    });
+		if ((!req.body.category) || (!req.body.quantity)){res.redirect('/');}
+		if ((req.body.category) && (req.body.quantity)){
+			Category.findOne({'name': req.body.category}, function(err, categoryFound) {
+				if (err) { return next(err); }
+				if (!categoryFound) {
+					// Create category and datum, redirect/return
+					var newCategory = new Category();
+					newCategory.name = req.body.category;
+					// Add datum here
+					newCategory.save(function(err, resultCategory){
+						if(err) {
+							throw err;
+						}
+						console.log(resultCategory.name+' category created')
+						// Emit the new categories for all to use
+						Category.find( function foundCategories(err, categories) {
+							var catList = [];
+							categories.forEach(function(cat) {
+								catList.push('"'+cat.name+'"')
+							});
+							io.sockets.emit('newCategories', { names: catList });
+						});
+					});
+					var newDatum = new Datum();
+					newDatum.quantity = req.body.quantity;
+					newDatum.category = newCategory._id;
+					newDatum.categoryName = newCategory.name;
+					newDatum.account  = req.user._id;
+					newDatum.save(function(err, resultDatum){
+						if(err) {
+							throw err;
+						}
+						console.log(resultDatum._id+' datum created')
+					});
+				}
+				if (categoryFound) {
+					console.log('Category '+categoryFound._id+' found')
+					// Create dataum with account and category
+					var newDatum = new Datum();
+					newDatum.quantity = req.body.quantity;
+					newDatum.category = categoryFound._id;
+					newDatum.categoryName = categoryFound.name;
+					newDatum.account  = req.user._id;
+					newDatum.save(function(err, resultDatum){
+						if(err) {
+							throw err;
+						}
+						console.log(resultDatum._id+' datum created')
+					});
+				}
+				req.flash('info', 'Data tracked!')
+				res.redirect('/')
+			});
+		}
   };
 };

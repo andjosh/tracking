@@ -67,11 +67,11 @@ block content
 
 		.pure-u-1-4
 			p
-				code <span class="get">GET:</span> /api/1/category/:id
+				code <span class="get">GET:</span> /api/1/category/:id/:key
 		.pure-u-3-4
 			h3 View all data archives under a single category.
-			p NOTE: This endpoint does not require a key for access.
-			p Example response: <a href="/api/1/category/">/api/1/category/</a>
+			p NOTE: This endpoint requires special API permissions for access. Get in <a href="/contact">contact</a> if you or your organization would like access to categorical data.
+			p Example response: <a href="/api/1/category/51bb25744831890200000001/#{user.key}">/api/1/category/51bb25744831890200000001/#{user.key}</a>
 
 		.pure-u-1-4
 			p

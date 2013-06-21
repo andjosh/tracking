@@ -23,14 +23,30 @@ exports.viewAccount = function(req,res) {
 };
 
 exports.viewCategory = function(req,res) {
-	Category.findById(req.params.category,'name', function(err, category){
-		Datum.find({category:req.params.category},'quantity category categoryName date account',{sort: '-date'}, function(err, data){
-			Account.populate(data, {path: 'account', select: 'location birthdate occupation gender'}, function(err, data){
+	Account.findOne({key: req.params.key},'key fullAccess', function(err, account){
+		if (account){
+			if (account.fullAccess == true){
+				Category.findById(req.params.category,'name', function(err, category){
+					Datum.find({category:req.params.category},'quantity category categoryName date account',{sort: '-date'}, function(err, data){
+						Account.populate(data, {path: 'account', select: 'location birthdate occupation gender'}, function(err, data){
+							res.writeHead(200, { 'Content-Type': 'application/json' });
+							res.write('{"category":'+JSON.stringify(category)+',"data":'+JSON.stringify(data)+'}');
+							res.end();
+						})
+					})
+				})
+			}
+			if (account.fullAccess != true){
 				res.writeHead(200, { 'Content-Type': 'application/json' });
-				res.write('{"category":'+JSON.stringify(category)+',"data":'+JSON.stringify(data)+'}');
+				res.write('{"error":"You do not have the required permissions to access this data."}');
 				res.end();
-			})
-		})
+			}
+		}
+		if (!account){
+			res.writeHead(200, { 'Content-Type': 'application/json' });
+			res.write('{"error":"No account found for provided key."}');
+			res.end();
+		}
 	})
 };
 
