@@ -167,7 +167,18 @@ module.exports = function (app) {
 			Category.findById(req.params.id, function(err,category){
 				Datum.find({account: req.user._id, category: req.params.id},null, {sort: 'date'}, function(err, data){
 					Datum.find({category: req.params.id}, null, {sort:'date'}, function(err, bigData){
-						res.render('category', { title: category.name, user: req.user, theData: data, bigData: bigData, category: category, message: req.flash('info'), error: req.flash('error') });
+						Account.populate(bigData,{ path: 'account' }, function(err, bigData){
+							var theirData = [];
+							bigData.forEach(function(da){
+								if(da.account.gender == req.user.gender){
+									var bday = new Date(da.account.birthdate), myday = new Date(req.user.birthdate);
+									if( ((bday-myday) < 15724800000) || ((myday-bday) < 15724800000) ){
+										theirData.push(da.quantity)
+									}
+								}
+							})
+							res.render('category', { title: category.name, user: req.user, theData: data, theirData: theirData, category: category, message: req.flash('info'), error: req.flash('error') });
+						})
 					})
 				})
 			})
@@ -176,32 +187,32 @@ module.exports = function (app) {
 		app.get('/off-track', ensureAdmin, function(req,res){
 			Account.find( function(err,accounts){
 				Category.find(function(err,categories){
-					res.render('offTrack', { title: 'Welcome Back', user: req.user, accounts: accounts, categories: categories, message: req.flash('info'), error: req.flash('error') });
+					res.render('offTrack', { title: 'OffTrack', user: req.user, accounts: accounts, categories: categories, message: req.flash('info'), error: req.flash('error') });
 				})
 			})
 		})
 		app.get('/off-track/accounts', ensureAdmin, function(req,res){
 			Account.find( function(err,accounts){
-				res.render('offTrackAccounts', { title: 'Welcome Back', user: req.user, accounts: accounts, message: req.flash('info'), error: req.flash('error') });
+				res.render('offTrackAccounts', { title: 'OffTrack Accounts', user: req.user, accounts: accounts, message: req.flash('info'), error: req.flash('error') });
 
 			})
 		})
 		app.get('/off-track/categories', ensureAdmin, function(req,res){
 			Category.find(function(err,categories){
-				res.render('offTrackCategories', { title: 'Welcome Back', user: req.user, categories: categories, message: req.flash('info'), error: req.flash('error') });
+				res.render('offTrackCategories', { title: 'OffTrack Categories', user: req.user, categories: categories, message: req.flash('info'), error: req.flash('error') });
 			})
 		})
 		app.get('/off-track/accounts/:id', ensureAdmin, function(req,res){
 			Account.findById(req.params.id, function(err,account){
 				Datum.find({account: req.params.id}, function(err,data){
-					res.render('offTrackAccount', { title: 'Welcome Back', user: req.user, data: data, account: account, message: req.flash('info'), error: req.flash('error') });
+					res.render('offTrackAccount', { title: 'OffTrack', user: req.user, data: data, account: account, message: req.flash('info'), error: req.flash('error') });
 				})
 			})
 		})
 		app.get('/off-track/categories/:id', ensureAdmin, function(req,res){
 			Category.findById(req.params.id, function(err,category){
 				Datum.find({category:req.params.id}, function(err,data){
-					res.render('offTrackCategory', { title: 'Welcome Back', user: req.user, data: data, category: category, message: req.flash('info'), error: req.flash('error') });
+					res.render('offTrackCategory', { title: 'OffTrack', user: req.user, data: data, category: category, message: req.flash('info'), error: req.flash('error') });
 				})
 			})
 		})

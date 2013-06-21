@@ -15,26 +15,33 @@ block content
 	.pure-g-r
 		.pure-u-1-4
 		.pure-u-1-2.pull-center
-			h1.sans #{category.name} <small>since</small> #{month}/#{day}/#{year}
+			h2.sans <small>Your</small> #{category.name} <small>since</small> #{month}/#{day}/#{year}
 		.pure-u-1-4
 
 	script(src="http://d3js.org/d3.v3.min.js")
-	#graph(style="height:200px;").pull-center
-		- var data = [];
+	#graph(style="height:300px;").pull-center
+		- var sum = 0;
+		- for d in theirData
+			- sum += d;
+		- sum = (sum/theirData.length);
+		- var data = [], dumb = [];
 		- for d in theData
-			- data.push(d.quantity);
+			- data.push(d.quantity);dumb.push(sum);
 		- var max_of_array = Math.max.apply(Math, data), min_of_array = Math.min.apply(Math, data);
 		- var taDate = theData[theData.length-1].date.getDate(), taMonth = theData[theData.length-1].date.getMonth(), toDate = (new Date).getDate(), toMonth = (new Date).getMonth();
 		span Dataset: #{data.length} | Max: #{max_of_array} | Min: #{min_of_array} | Latest: #{theData[theData.length-1].quantity}
 			if ((taDate == toDate) && (taMonth == toMonth))
 				small  (today)
+		br
+		small Average for your age and gender: #{sum}
 	script
+		console.log(#{theirData});
 		// create an SVG element inside the #graph div that fills 100% of the div
 		var div = document.getElementById("graph");
 		var graph = d3.select("#graph").append("svg:svg").attr("width", "100%").attr("height", "100%");
 
 		// create a simple data array that we'll plot with a line (this array represents only the Y values, X will just be the index location)
-		var data = [#{data}];
+		var data = [#{data}], dumb = [#{dumb}];console.log('sum = '+#{sum}+', '+#{sum});
 								console.log('max = '+#{max_of_array}+', min = '+#{min_of_array}+', and length = '+data.length)
 
 		// X scale will fit values from 0-10 within pixels 0-100
@@ -60,15 +67,23 @@ block content
 
 		// display the line by appending an svg:path element with the data line we created above
 		graph.append("svg:path")
+		.attr("id", "myOtherPath")
+		.attr("stroke", "lightgrey")
+		.attr("stroke-width", 1)
+		.attr("fill", "none")
+		.attr("d", line(dumb))
+		.attr("id", "myOtherPath");
+		graph.append("svg:path")
 		.attr("id", "myPath")
 		.attr("stroke", "steelblue")
 		.attr("stroke-width", 1)
 		.attr("fill", "none")
-		.attr("d", line(data))
+		.attr("d", line(dumb))
 		.attr("id", "myPath")
 		//.on("mousemove", mMove)
-		.append("title");
+		.transition().duration(1000).attr("d", line(data))
+		.ease('bounce');
 		function mMove(){
-		var m = d3.svg.mouse(this);
+		var m = d3.mouse(this);
 		d3.select("#myPath").select("title").text(m);
 		};

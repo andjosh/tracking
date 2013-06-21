@@ -1,8 +1,9 @@
 window.onload = function() {
 
-  var socket = io.connect(window.location.hostname);
-  var x = document.getElementById("age");
-  var named = document.getElementsByName("uid");
+  var socket = io.connect(window.location.hostname),
+  		x = document.getElementById("age"),
+  		named = document.getElementsByName("uid"),
+			graph = document.getElementById("graph");
 
   socket.on('newAge'+named[0].content, function (data) {
       if(data.years) {
