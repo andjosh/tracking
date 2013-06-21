@@ -170,10 +170,12 @@ module.exports = function (app) {
 						Account.populate(bigData,{ path: 'account' }, function(err, bigData){
 							var theirData = [];
 							bigData.forEach(function(da){
-								if(da.account.gender == req.user.gender){
-									var bday = new Date(da.account.birthdate), myday = new Date(req.user.birthdate);
-									if( ((bday-myday) < 15724800000) || ((myday-bday) < 15724800000) ){
-										theirData.push(da.quantity)
+								if (da.account){
+									if(da.account.gender == req.user.gender){
+										var bday = new Date(da.account.birthdate), myday = new Date(req.user.birthdate);
+										if( ((bday-myday) < 15724800000) || ((myday-bday) < 15724800000) ){
+											theirData.push(da.quantity)
+										}
 									}
 								}
 							})

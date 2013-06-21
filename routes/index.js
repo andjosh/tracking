@@ -72,35 +72,38 @@ exports.index = function(io) {
 			whatIsTracking.out = { replace: 'whatIsTracking' }
 			whatIsTracking.verbose = true;
 			Datum.mapReduce(whatIsTracking, function (err, model, stats) {
-			  console.log('whatIsTracking map reduce took %d ms', stats.processtime)
-			  model.find().where('value').gt(0).exec(function (err, docs) {
-			    docs.forEach(function(doc) {
-			    	console.log(doc._id+' : '+doc.value)
-			    })
-			    var whenTracking = {}; // Find when data is being tracked/entered
-					whenTracking.map = function () { emit(
-						(
-							(this.date.getFullYear()).toString()
-							+ ( ((this.date.getMonth() + 1).toString() > 9) ? (this.date.getMonth() + 1).toString() : '0'+(this.date.getMonth() + 1).toString() )
-							+ ( ((this.date.getDate() + 1).toString() > 9) ? (this.date.getDate() + 1).toString() : '0'+(this.date.getDate() + 1).toString() )
-							)
-							, 1) }
-					whenTracking.reduce = function (k, vals) { return vals.length }
-					whenTracking.out = { replace: 'whenTracking' }
-					// whenTracking.limit = 30;
-					whenTracking.verbose = true;
-					Datum.mapReduce(whenTracking, function (err, model, stats) {
-					  console.log('whenTracking map reduce took %d ms', stats.processtime)
-					  model.find().sort('_id').exec(function (err, whenDocs) {
-					    whenDocs.forEach(function(doc) {
-					    	console.log('Data entered '+doc._id+' : '+doc.value)
-					    })
-					    Account.count( function foundUsers(err, accounts) {
-					   		res.render('index',{title: 'On Track', whenData: whenDocs, accounts: accounts, message: req.flash('info'), error: req.flash('error')})
-					    });
-					  });
-					})
-			  });
+				if (!model){res.redirect('/add-datum');}
+				if (model){
+					console.log('whatIsTracking map reduce took %d ms', stats.processtime)
+					model.find().where('value').gt(0).exec(function (err, docs) {
+						docs.forEach(function(doc) {
+							console.log(doc._id+' : '+doc.value)
+						})
+						var whenTracking = {}; // Find when data is being tracked/entered
+						whenTracking.map = function () { emit(
+							(
+								(this.date.getFullYear()).toString()
+								+ ( ((this.date.getMonth() + 1).toString() > 9) ? (this.date.getMonth() + 1).toString() : '0'+(this.date.getMonth() + 1).toString() )
+								+ ( ((this.date.getDate() + 1).toString() > 9) ? (this.date.getDate() + 1).toString() : '0'+(this.date.getDate() + 1).toString() )
+								)
+								, 1) }
+						whenTracking.reduce = function (k, vals) { return vals.length }
+						whenTracking.out = { replace: 'whenTracking' }
+						// whenTracking.limit = 30;
+						whenTracking.verbose = true;
+						Datum.mapReduce(whenTracking, function (err, model, stats) {
+							console.log('whenTracking map reduce took %d ms', stats.processtime)
+							model.find().sort('_id').exec(function (err, whenDocs) {
+								whenDocs.forEach(function(doc) {
+									console.log('Data entered '+doc._id+' : '+doc.value)
+								})
+								Account.count( function foundUsers(err, accounts) {
+									res.render('index',{title: 'On Track', whenData: whenDocs, accounts: accounts, message: req.flash('info'), error: req.flash('error')})
+								});
+							});
+						})
+					});
+				}
 			})
 		}
   };
