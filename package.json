@@ -31,7 +31,6 @@
     "xml-digester":"*",
     "mailgun":"*",
     "async":"*",
-    "nodetime":"*",
-		"moves":"*"
+    "nodetime":"*"
   }
 }

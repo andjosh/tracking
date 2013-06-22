@@ -185,6 +185,10 @@ module.exports = function (app) {
 			})
     });
 
+    app.get('/auth/moves', function(req,res){
+
+    })
+
 		app.get('/off-track', ensureAdmin, function(req,res){
 			Account.find( function(err,accounts){
 				Category.find(function(err,categories){
