@@ -15,7 +15,7 @@ block content
 	.pure-g-r
 		.pure-u-1-4
 		.pure-u-1-2.pull-center
-			h2.sans <small>Your</small> #{category.name} <small>since</small> #{month}/#{day}/#{year}
+			h2.sans <small>Your daily</small> #{category.name} <small>since</small> #{month}/#{day}/#{year}
 		.pure-u-1-4
 
 	script(src="http://d3js.org/d3.v3.min.js")
@@ -33,7 +33,7 @@ block content
 			if ((taDate == toDate) && (taMonth == toMonth))
 				small  (today)
 		br
-		small Average for your age and gender: #{sum}
+		small Average for your age and gender: #{sum} (grey line)
 	script
 		console.log(#{theirData});
 		// create an SVG element inside the #graph div that fills 100% of the div
@@ -75,7 +75,7 @@ block content
 		.attr("id", "myOtherPath");
 		graph.append("svg:path")
 		.attr("id", "myPath")
-		.attr("stroke", "steelblue")
+		.attr("stroke", "#384682")
 		.attr("stroke-width", 1)
 		.attr("fill", "none")
 		.attr("d", line(dumb))
