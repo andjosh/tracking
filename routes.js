@@ -64,11 +64,7 @@ module.exports = function (app) {
     });
 
     app.get('/account', ensureAuthenticated, function(req, res){
-      Datum.find({account: req.user._id}).sort('-date').exec(function(err,data) { // Find account data
-        Category.populate(data, {path: 'category', model: 'Category'}, function(err, data) {
-          res.render('account', { user: req.user, title : "Your account", data: data, message: req.flash('info') });
-        })
-      })
+          res.render('account', { user: req.user, title : "Your Track", message: req.flash('info') });
     });
 
     app.post('/account', ensureAuthenticated, function(req, res){

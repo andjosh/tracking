@@ -34,6 +34,12 @@ block content
 				small  (today)
 		br
 		small Average for your age and gender: #{sum} (grey line)
+	.second-main.pure-g-r
+		.pure-u-2-5
+		.pure-u-1-5
+			- for d in theData
+				p.pull-center
+					a(href="/datum/#{d._id}") #{d.quantity} <small>on</small> #{d.date.getMonth()}/#{d.date.getDate()}/#{d.date.getFullYear()}
 	script
 		console.log(#{theirData});
 		// create an SVG element inside the #graph div that fills 100% of the div
@@ -80,7 +86,7 @@ block content
 		.attr("fill", "none")
 		.attr("d", line(dumb))
 		.attr("id", "myPath")
-		//.on("mousemove", mMove)
+		.on("mousemove", mMove)
 		.transition().duration(1000).attr("d", line(data))
 		.ease('bounce');
 		function mMove(){
