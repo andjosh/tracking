@@ -51,7 +51,10 @@ module.exports = function (app) {
           // Welcome email
           mg.sendText('info@ontrack.io', [req.body.email, 'jsh@bckmn.com'],
             'Get On track!',
-            'Congratulations on wating to get on track! You can always track yourself, every day, on the home page: http://ontrack.io Thanks! - Josh, OnTrack.io',
+            'Congratulations on wanting to get on track! '+
+            'You can always track yourself, every day, on http://ontrack.io '+
+            'Thanks! '+
+            '- Josh, OnTrack.io',
             'trackme.mailgun.org', {},
             function(err) {
               if (err) console.log('Oh noes: ' + err);

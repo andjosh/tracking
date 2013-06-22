@@ -1,14 +1,15 @@
-@import url("http://fonts.googleapis.com/css?family=Merriweather:400,300,700");
-@import url("http://fonts.googleapis.com/css?family=Merriweather+Sans:400,300,700");
+@import url("http://fonts.googleapis.com/css?family=Merriweather+Sans:300,700");
 @import url("http://yui.yahooapis.com/pure/0.2.0/pure-min.css");
 body {
-  font: 14px "Merriweather", Georgia, serif;
+  font: 14px "Merriweather Sans", Helvetica, sans-serif;
+  font-weight: 300;
 	line-height:1.6em;
   color: #222;
   background-color:#fff;
 }
-.sans{
-  font-family: "Merriweather Sans", Helvetica, sans-serif;
+h1, h2, h3, h4, h5 {font-weight: 700;}
+.thin{
+  font-weight: 300;
 }
 a {
   color: #838A95;
