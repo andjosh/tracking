@@ -35,9 +35,21 @@ block content
 		br
 		small Average for your age and gender: #{sum} (grey line)
 	.second-main.pure-g-r
-		.pure-u-2-5
-		.pure-u-1-5
-			- for d in theData
+		.pure-u-1-6
+		.pure-u-1-3
+			form(action="/add-datum", method="post").pure-g-r
+				.pure-u-3-4
+					#category
+						p.underline #{category.name}
+						input(type="hidden", data-provide="typeahead", name="category", placeholder="Name/Category", value='#{ category.name }')
+				.pure-u-1-4
+					input(type="float", name="quantity", placeholder="Quantity")
+				input(type="hidden", name="account", value='#{user._id}')
+				#submit
+				input(type="submit", value="Add #{category.name}")
+		.pure-u-1-3
+			h4.pull-center Your History
+			- for d in theData.reverse()
 				p.pull-center
 					a(href="/datum/#{d._id}") #{d.quantity} <small>on</small> #{d.date.getMonth()}/#{d.date.getDate()}/#{d.date.getFullYear()}
 	script

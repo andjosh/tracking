@@ -13,7 +13,7 @@ block content
 	- var year  = datum.date.getFullYear();
 	#main.pure-g-r
 		.pure-u-1-2.pull-center
-			h1.thin #{title} on #{month}/#{day}/#{year}
+			h1.thin <a href="/category/#{datum.category._id}">#{title}</a> on #{month}/#{day}/#{year}
 		.pure-u-1-4
 			form(action="/datum/#{datum._id}", method="post")
 				.pure-u-3-4
