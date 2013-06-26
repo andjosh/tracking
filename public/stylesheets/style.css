@@ -436,6 +436,6 @@ code {background-color:#eee;padding:0.4em 0.6em;}
 
 /* Respond! */
 @media only screen and (max-width: 768px) {
-	#main{padding:1em;}
+	.main{padding:1em;}.second-main{padding:0.5em;}
 	.no-mobile{display:none;}
 }

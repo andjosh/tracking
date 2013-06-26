@@ -27,7 +27,8 @@ exports.viewCategory = function(req,res) {
 		if (account){
 			if (account.fullAccess == true){
 				Category.findById(req.params.category,'name', function(err, category){
-					Datum.find({category:req.params.category},'quantity category categoryName date account',{sort: '-date'}, function(err, data){
+					Datum.find({category:req.params.category}, null,{sort: 'date'}, function(err, data){
+						console.log(data[0])
 						Account.populate(data, {path: 'account', select: 'location birthdate occupation gender'}, function(err, data){
 							res.writeHead(200, { 'Content-Type': 'application/json' });
 							res.write('{"category":'+JSON.stringify(category)+',"data":'+JSON.stringify(data)+'}');
@@ -84,7 +85,7 @@ exports.deleteDatum = function(req,res){
 exports.makeDatum = function(io){
 	return function(req,res){
 		Account.findOne({key: req.params.key},'key', function(err, account){
-			if (account){
+			if (account && req.body.category){
 				Category.findOne({'name': req.body.category}, function(err, categoryFound) {
 					if (err) { return next(err); }
 					if (!categoryFound) {
@@ -135,7 +136,7 @@ exports.makeDatum = function(io){
 							}
 							console.log(resultDatum._id+' datum created')
 							res.writeHead(200, { 'Content-Type': 'application/json' });
-							res.write(JSON.stringify(resultDatum));
+							res.write(JSON.stringify(newDatum));
 							res.end();
 						});
 					}
@@ -146,13 +147,18 @@ exports.makeDatum = function(io){
 				res.write('{"error":"No account or you are not authorized."}');
 				res.end();
 			}
+			if (!req.body.category){
+				res.writeHead(200, { 'Content-Type': 'application/json' });
+				res.write('{"error":"Must specify category"}');
+				res.end();
+			}
 		})
 	};
 };
 
 exports.apiVersion = function(req,res){
 	res.writeHead(200, { 'Content-Type': 'application/json' });
-	res.write('{ "stable":{"version":"1.0.0"}, "bleeding":{"version":"1.0.0"} }');
+	res.write('{ "stable":{"version":"1"}, "bleeding":{"version":"1"} }');
 	res.end();
 }
 

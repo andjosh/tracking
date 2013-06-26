@@ -20,7 +20,7 @@ block content
 			.pull-right
 				small <a href="/api/regenerate" onClick="return confirm('Do you really want to invalidate your old key?')">Regenerate key</a>
 			h3 General Guidelines
-			p Unless otherwise specified, API calls must include a user API access key passed as an element in the URL.
+			p Unless otherwise specified, API calls must include a user API access key passed as an element in the URL. When manipulating a specific object, the unique ID must be passed as a parameter as well.
 			p All search queries must be passed as URL parameters on each search request.
 			p Please do not abuse the API. We can tell. And we will turn off the lights on you if we find you doing it.
 		.pure-u-1-3
@@ -31,15 +31,17 @@ block content
 		.pure-u-3-4
 			h3 Access information about your account.
 			p You will only have access to account-specific information about your single account.
-			p Example response: <a href="/api/1/account/#{user.key}">/api/1/account/#{user.key}</a>
+			blockquote Example response: <a href="/api/1/account/#{user.key}">/api/1/account/#{user.key}</a>
 
 		.pure-u-1-4
 			p
 				code <span class="post">POST:</span> /api/1/add/:key
 		.pure-u-3-4
 			h3 Add a single datum under an account.
+			p The two required attributes must be passed as a JSON body on the request (with the appropriate application/json headers).
+			p The category name passed will be matched with an existing category, if one exists. If the category specified does not exist yet, it will be created on the fly.
 			table.pure-table.pure-table-horizontal
-				caption Attributes required upon data creation
+				caption <h3>Attributes required upon data creation</h3>
 				thead
 					tr
 						td Attribute
@@ -56,14 +58,21 @@ block content
 					td The category name under which this datum should be filed
 					td STRING
 					td required
-			p Example response:
+			blockquote Example request body:
+			blockquote
+				code { "category": "California", "quantity": 12 }
+			blockquote Example response:
+			blockquote
+				code { "__v": 0, <br>"account": "51ac0652ebc3e556db000001", <br>"categoryName": "California", <br>"category": "51b15bfa0a6e3d942b000002", <br>"quantity": 12, <br>"_id": "51ca69893c36303b24000001", <br>"date": "2013-06-26T04:09:45.115Z" }
 
 		.pure-u-1-4
 			p
 			code <span class="delete">DELETE:</span> /api/1/datum/:id/:key
 		.pure-u-3-4
 			h3 Remove/delete a single datum element.
-			p Example response:
+			blockquote Example successful response: 
+			blockquote
+				code {"success":"Datum 51bb25744831890200000001 successfully removed."}
 
 		.pure-u-1-4
 			p
@@ -71,15 +80,16 @@ block content
 		.pure-u-3-4
 			h3 View all data archives under a single category.
 			p NOTE: This endpoint requires special API permissions for access. Get in <a href="/contact">contact</a> if you or your organization would like access to categorical data.
-			p Example response: <a href="/api/1/category/51bb25744831890200000001/#{user.key}">/api/1/category/51bb25744831890200000001/#{user.key}</a>
+			blockquote Example response: <a href="/api/1/category/51bb25744831890200000001/#{user.key}">/api/1/category/51bb25744831890200000001/#{user.key}</a>
 
 		.pure-u-1-4
 			p
 				code <span class="get">GET:</span> /api/1/categories
 		.pure-u-3-4
 			h3 View a list of all currently active categories.
-			p NOTE: This endpoint does not require a key for access.
-			p Example response: <a href="/api/1/categories">/api/1/categories</a>
+			p This will return an array of all currently active categories, complete with name and identifiable ID.
+			p NOTE: This endpoint does NOT require a key for access.
+			blockquote Example response: <a href="/api/1/categories">/api/1/categories</a>
 
 		.pure-u-1-4
 			p
@@ -87,5 +97,6 @@ block content
 		.pure-u-3-4
 			h3 View API version information.
 			p At this enpoint are listed two versions of the API. The bleeding edge version should only be used and queried for feature-testing purposes. The stable version should be used generally and for all production instances.
-			p NOTE: This endpoint does not require a key for access.
-			p Example response: <a href="/api/version">/api/version</a>
+			p The returned API version string should be used when calling API endpoints, ex: <code>/api/&lt;version&gt;/...</code>
+			p NOTE: This endpoint does NOT require a key for access.
+			blockquote Example response: <a href="/api/version">/api/version</a>

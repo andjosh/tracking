@@ -30,9 +30,9 @@ block content
 		if user
 			.pure-u-1-2.pull-center
 					if user.username
-						h2.thin #{ user.username }, #{title}
+						h2.thin.no-mobile #{ user.username }, #{title}
 					if (!user.username)
-						h2.thin
+						h2.thin.no-mobile
 							a(href="/") You, #{title}
 					if user.birthdate
 						p
