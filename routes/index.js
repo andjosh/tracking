@@ -6,6 +6,17 @@ var passport = require('passport')
 /*
  * GET home page.
  */
+function range1(i){return i?range1(i-1).concat(i):[]}
+function shuffle(array) {
+	var counter = array.length, temp, index;
+    while (counter > 0) {
+        index = (Math.random() * counter--) | 0;
+        temp = array[counter];
+        array[counter] = array[index];
+        array[index] = temp;
+    }
+    return array;
+}
 
 exports.index = function(io) {
 	return function(req,res) {
@@ -32,7 +43,7 @@ exports.index = function(io) {
 				async.series([
 					function(callback){
 							foundCats.forEach(function(cat){
-								Category.findById(cat, function(err, endCat){
+								Category.findById(cat, '_id name', function(err, endCat){
 									if (!endCat){
 										finalCats.push('')
 									}
@@ -66,64 +77,62 @@ exports.index = function(io) {
 			});
 		}
 		if (!req.user){
-			var whatIsTracking = {}; // Find how much data is behind each category
-			whatIsTracking.map = function () { emit(this.categoryName, 1) }
-			whatIsTracking.reduce = function (k, vals) { return vals.length }
-			whatIsTracking.out = { replace: 'whatIsTracking' }
-			whatIsTracking.verbose = true;
-			Datum.mapReduce(whatIsTracking, function (err, model, stats) {
-				if (!model){res.redirect('/add-datum');}
-				if (model){
-					console.log('whatIsTracking map reduce took %d ms', stats.processtime)
-					model.find().where('value').gt(0).exec(function (err, docs) {
-						docs.forEach(function(doc) {
-							console.log(doc._id+' : '+doc.value)
-						})
-						var whenTracking = {}; // Find when data is being tracked/entered
-						whenTracking.map = function () { emit(
-							(
-								(this.date.getFullYear()).toString()
-								+ ( ((this.date.getMonth() + 1).toString() > 9) ? (this.date.getMonth() + 1).toString() : '0'+(this.date.getMonth() + 1).toString() )
-								+ ( ((this.date.getDate() + 1).toString() > 9) ? (this.date.getDate() + 1).toString() : '0'+(this.date.getDate() + 1).toString() )
-								)
-								, 1) }
-						whenTracking.reduce = function (k, vals) { return vals.length }
-						whenTracking.out = { replace: 'whenTracking' }
-						// whenTracking.limit = 30;
-						whenTracking.verbose = true;
-						Datum.mapReduce(whenTracking, function (err, model, stats) {
-							console.log('whenTracking map reduce took %d ms', stats.processtime)
-							model.find().sort('_id').exec(function (err, whenDocs) {
-								whenDocs.forEach(function(doc) {
-									console.log('Data entered '+doc._id+' : '+doc.value)
-								})
-								Account.count( function foundUsers(err, accounts) {
-									res.render('index',{title: 'On Track', whenData: whenDocs, accounts: accounts, message: req.flash('info'), error: req.flash('error')})
-								});
-							});
-						})
-					});
-				}
-			})
+			var range = range1(15); var graphable = shuffle(range);
+			res.render('index',{title: 'On Track', graphable: graphable, message: req.flash('info'), error: req.flash('error')})
 		}
   };
 };
 
 // For testing
-exports.test = function(io) {
+exports.stats = function(io) {
 	return function(req,res) {
-		Account.find({email: 'jsh@bckmn.com'}, function(err, allAcct){
-			allAcct.forEach(function(a){
-				a.admin = true;
-				a.fullAccess = true;
-				a.save(function(err,saved){
-					if(err) {
-						throw err;
-					}
-					console.log(saved._id+' admin created')
-				})
-			})
+		var jsonString = '{"whatIsTracking":{"time":';
+		var whatIsTracking = {}; // Find how much data is behind each category
+		whatIsTracking.map = function () { emit(this.categoryName, 1) }
+		whatIsTracking.reduce = function (k, vals) { return vals.length }
+		whatIsTracking.out = { replace: 'whatIsTracking' }
+		whatIsTracking.verbose = true;
+		Datum.mapReduce(whatIsTracking, function (err, model, stats) {
+			if (!model){res.redirect('/add-datum');}
+			if (model){
+				jsonString += '"'+stats.processtime.toString()+'",';
+				console.log(jsonString)
+				model.find().where('value').gt(0).exec(function (err, docs) {
+					docs.forEach(function(doc) {
+						if(doc._id){
+							jsonString += '"'+doc._id.toString()+'" : "'+doc.value.toString()+'",';
+						}
+					})
+					jsonString += '"count":"'+docs.length+'"';
+					var whenTracking = {}; // Find when data is being tracked/entered
+					whenTracking.map = function () { emit(
+						(
+							(this.date.getFullYear()).toString()
+							+ ( ((this.date.getMonth() + 1).toString() > 9) ? (this.date.getMonth() + 1).toString() : '0'+(this.date.getMonth() + 1).toString() )
+							+ ( ((this.date.getDate() + 1).toString() > 9) ? (this.date.getDate() + 1).toString() : '0'+(this.date.getDate() + 1).toString() )
+							)
+							, 1) }
+					whenTracking.reduce = function (k, vals) { return vals.length }
+					whenTracking.out = { replace: 'whenTracking' }
+					// whenTracking.limit = 30;
+					whenTracking.verbose = true;
+					Datum.mapReduce(whenTracking, function (err, model, stats) {
+						jsonString += '},"whenTracking":{"time":"'+stats.processtime.toString()+'",';
+						model.find().sort('_id').exec(function (err, whenDocs) {
+							whenDocs.forEach(function(doc) {
+								jsonString += '"Data entered '+doc._id.toString()+'" : "'+doc.value.toString()+'",';
+							})
+							jsonString += '"count":"'+whenDocs.length+'"';
+							Account.count( function foundUsers(err, accounts) {
+								jsonString += '},"accounts":"'+accounts.toString()+'"}';
+								res.writeHead(200, { 'Content-Type': 'application/json' });
+								res.write(jsonString);
+								res.end();
+							});
+						});
+					})
+				});
+			}
 		})
-		res.redirect('/');
 	}
 }

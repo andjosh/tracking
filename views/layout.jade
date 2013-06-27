@@ -16,15 +16,12 @@ html
           ul
             li
               a(href="/account")= "Your Track"
-            if user
-              li
-                a(href="/")= "Home"
+            li
+              a(href="/")= "Home"
             if user
               li
                 a(href="/logout")= "Log Out"
             if (!user)
-              li
-                a(href="/register")= "Register"
               li
                 a(href="/about")= "About"
 
@@ -38,4 +35,4 @@ html
 
     script(src='/socket.io/socket.io.js')
     script(src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
-    script(src='/javascripts/misc.min.js')
+    script(src='/javascripts/misc.js')

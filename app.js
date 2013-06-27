@@ -121,7 +121,7 @@ app.get("/api/regenerate", ensureAuthenticated, api.regenKey);
 
 // Routes with io
 app.get("/", index.index(io));
-app.get("/i-am-a-jedi", index.test(io));
+app.get("/stats", index.stats(io));
 app.get("/add-datum", ensureAuthenticated, datum.addDatum(io));
 app.post("/add-datum", ensureAuthenticated, datum.postDatum(io));
 app.get("/datum/:id", ensureAuthenticated, datum.viewDatum(io));
