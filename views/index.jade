@@ -24,7 +24,7 @@ block content
 							.pure-u-1-2#submit
 								input(type="submit", value="Log In")
 			.pure-u-1-2.pull-center
-				p.lead.sans <a class="btn message-home md-trigger" data-modal="modal">Start</a> seeing yourself, graphed.
+				p.lead.sans <a class="btn message-home md-trigger" data-modal="modal-register">Start</a> seeing yourself, graphed.
 				p Track your progress on <strong>anything</strong> you can quantify.
 
 		if user
@@ -41,6 +41,7 @@ block content
 						p.lead.intro
 							| You should take a moment and <a href="/account" class="">augment your account</a>.
 						p It will make everything easier down the road.
+					a.btn.md-trigger(data-modal="modal-intro") How to enter data
 
 			.pure-u-1-3.pull-center
 				form(action="/add-datum", method="post")
@@ -109,7 +110,7 @@ block content
 			.transition().duration(1000).delay(200).attr("d", line(data))
 			.ease('bounce');
 
-	.md-modal.md-effect#modal
+	.md-modal.md-effect#modal-register
 		.md-content
 			h2.pull-center.thin Welcome!
 			form(action="/register",method="post")
@@ -122,4 +123,17 @@ block content
 					input(type="submit", value="Register")
 			.pull-center
 				a.btn.md-close or wait
+	.md-modal.md-effect#modal-intro
+		.md-content
+			h2.pull-center Entering data
+			p.lead Track any category you can put into a daily number.
+			p You can track your amount of <strong>Sleep (hrs)</strong> each day or your <strong>Mood (max 10)</strong> every night or your <strong>Bodyweight (lbs)</strong> every morning.
+			p Any category can be created and tracked, but please try to:
+			ul
+				li Add a unit of measurement in parentheses to the category name, e.g. <strong>Music Listening (hrs)</strong>.
+				li Track one entry per day for each Category. (Edit or add to previous data by viewing the category.)
+				lu Use relevant categories where applicable.
+			p.lead You can view your track on any category at any time, and compare your numbers to your demographical averages.
+			.pull-right
+				a.btn.md-close Got it!
 	.md-overlay
