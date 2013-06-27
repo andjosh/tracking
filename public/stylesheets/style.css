@@ -171,12 +171,12 @@ code {background-color:#eee;padding:0.4em 0.6em;}
 }
 
 .md-show.md-effect ~ .md-overlay {
-  color: #384682;background-color: #fff;
+  color: #384682;background-color: #f2f4fb;
 } 
 
 .md-effect .md-content h3,
 .md-effect .md-content {
-  color: #384682;background-color: #fff;
+  color: #384682;background-color: #f2f4fb;
 }
 
 .md-show.md-effect .md-content {

@@ -81,7 +81,7 @@ block content
 			var data = [#{data}], dumb = [#{dumb}];console.log('sum = '+#{sum}+', '+#{sum});
 									console.log('max = '+#{max_of_array}+', min = '+#{min_of_array}+', and length = '+data.length)
 
-			var x = d3.scale.linear().domain([0, data.length]).range([0, (div.offsetWidth+100)]);
+			var x = d3.scale.linear().domain([0, data.length]).range([0, (div.offsetWidth+200)]);
 			var y = d3.scale.linear().domain([(#{max_of_array}+1), (#{min_of_array}-2)]).range([0, 200]);
 
 			var line = d3.svg.line()
