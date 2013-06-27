@@ -28,7 +28,7 @@ exports.index = function(io) {
 				var userAge = new Date(req.user.birthdate);
 				function newAge() {
 					var now = new Date();
-					var aged = Math.round((now - userAge)/(1000*60*60*24*365)*10000000)/10000000;
+					var aged = Math.round((now - userAge)/(1000*60*60*24*365.25)*10000000)/10000000;
 					io.sockets.emit('newAge'+req.user._id, { years: aged });
 					ageTimer();
 				};
