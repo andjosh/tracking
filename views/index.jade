@@ -9,6 +9,7 @@ block content
 
 	.main.pure-g-r.container
 		if (!user)
+			.pure-u-1-4
 			.pure-u-1-2.pull-center
 				h1.thin
 					a(href="/")= title
@@ -16,17 +17,6 @@ block content
 				p#about
 				p.lead.sans <a class="btn message-home md-trigger" data-modal="modal-register">Start</a> seeing yourself, graphed.
 				p Track your progress on <strong>anything</strong> you can quantify.
-			.pure-u-1-2.pull-center
-				p Already have your account?
-				form(action="/login", method="post")
-					.pure-g-r
-						.pure-u-1-4#username
-							input(type="email", name="username", placeholder="Email", autofocus="autofocus")
-						.pure-u-1-4#password
-							input(type="password", name="password", placeholder="Password")
-						.pure-g-r
-							.pure-u-1-2#submit
-								input(type="submit", value="Log In")
 
 		if user
 			.pure-u-1-2.pull-center
@@ -126,6 +116,8 @@ block content
 					input(type="password", name="password_conf", placeholder="Confirm password")
 				#submit
 					input(type="submit", value="Register")
+			.pull-right
+				a.btn(href="/login") Already have your account?
 
 	.md-modal.md-effect#modal-intro
 		.md-content
