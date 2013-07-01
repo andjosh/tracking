@@ -40,7 +40,7 @@ io.sockets.on('connection', function (socket) {
     socket.emit('admin', { message: 'Welcome!' });
 });
 
-// Define what mongo to yell at
+// Define what/which mongo to yell at
 var mongoUri = process.env.MONGOLAB_URI
                 || process.env.MONGOHQ_URL
                 || 'mongodb://localhost/trackme';

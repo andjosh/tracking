@@ -18,7 +18,6 @@ block content
 			h2.sans <small>Your daily</small> #{category.name} <small>since</small> #{month}/#{day}/#{year}
 		.pure-u-1-4
 
-	script(src="http://d3js.org/d3.v3.min.js")
 	#graph(style="height:300px;").pull-center
 		- var sum = 0;
 		- for d in theirData
@@ -43,7 +42,7 @@ block content
 						p.underline #{category.name}
 						input(type="hidden", data-provide="typeahead", name="category", placeholder="Name/Category", value='#{ category.name }')
 				.pure-u-1-4
-					input(type="float", name="quantity", placeholder="Quantity")
+					input.numeric(type="float", name="quantity", placeholder="Quantity")
 				input(type="hidden", name="account", value='#{user._id}')
 				#submit
 				input(type="submit", value="Add #{category.name}")
@@ -52,6 +51,10 @@ block content
 			- for d in theData.reverse()
 				p.pull-center
 					a(href="/datum/#{d._id}") #{d.quantity} <small>on</small> #{d.date.getMonth()}/#{d.date.getDate()}/#{d.date.getFullYear()}
+	script(src="http://d3js.org/d3.v3.min.js")
+	script(src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
+	script(src='/javascripts/numeric.js')
+	script(src='/javascripts/add-datum.js')
 	script
 		console.log(#{theirData});
 		// create an SVG element inside the #graph div that fills 100% of the div

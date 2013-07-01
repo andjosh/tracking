@@ -8,12 +8,15 @@ block content
     p.pull-center.error #{error}
 
   #main.pure-g-r
+    .pure-u-1-4
     .pure-u-1-2.pull-center
       h1.thin
         a(href="/") On Track
       p#about
       h2.sans #{title}
     .pure-u-1-4
+    .pure-u-1-3
+    .pure-u-1-3
       form(action="/register",method="post")
         #username
           input(type="email", name="email", placeholder="Email", autofocus="autofocus")
@@ -22,4 +25,3 @@ block content
           input(type="password", name="password_conf", placeholder="Confirm password")
         #submit
         input(type="submit", value="Register")
-    .pure-u-1-4
