@@ -56,18 +56,7 @@ app.configure(function(){
     app.use(express.methodOverride());
     app.use(flash());
     app.use(express.cookieParser('your secret here'));
-    app.use(express.session({ secret: 'marybeth and the fox fighting bant' })); // CHANGE THIS SECRET!
-	  // Remember Me middleware
-	  app.use( function (req, res, next) {
-	    if ( req.method == 'POST' && req.url == '/login' ) {
-	      if ( req.body.rememberme ) {
-	        req.session.cookie.maxAge = 2592000000; // 30*24*60*60*1000 Rememeber 'me' for 30 days
-	      } else {
-	        req.session.cookie.expires = false;
-	      }
-	    }
-	    next();
-	  });
+    app.use(express.cookieSession({ secret: 'marybeth and the fox fighting bant', cookie: { maxAge: 1000*60*60 } })); // CHANGE THIS SECRET!
 
     app.use(passport.initialize());
     app.use(passport.session());

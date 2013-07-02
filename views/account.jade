@@ -34,7 +34,7 @@ block content
 								if (month < 10)
 									- month = '0'+month;
 								- var year  = user.birthdate.getFullYear();
-							input.numeric-date(onBlur="bdChecker()", type="text", name="birthdate", placeholder="Birthdate (MM/DD/YYYY)", maxlength="10", value="#{ user.birthdate ? (month + "/" + day + "/" + year) : '' }")
+							input(onBlur="bdChecker()", type="text", name="birthdate", placeholder="Birthdate (MM/DD/YYYY)", maxlength="10", value="#{ user.birthdate ? (month + '/' + day + '/' + year) : '' }")
 					.pure-u-1-2
 						#gender
 							input(type="text", name="gender", placeholder="Gender (male/female/other)", value="#{ user.gender ? user.gender : '' }")
