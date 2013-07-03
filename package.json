@@ -10,7 +10,7 @@
     "url": "git@github.com:jbckmn/tracking.git"
   },
   "engine": [
-    "node >=0.4.0"
+    "node >=0.8.0"
   ],
   "scripts": {
     "start": "node app"
