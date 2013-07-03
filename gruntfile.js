@@ -26,7 +26,7 @@ module.exports = function(grunt) {
     Account.count( function foundUsers(err, accounts) {
       console.log(accounts);
       mg.sendText('info@ontrack.io', ['jsh@bckmn.com'],
-        'OnTrack! Update',
+        'OnTrack Update',
         'There are currently '+accounts.toString()+' active accounts OnTrack.'+
         '- Grunted OnTrack.io',
         'trackme.mailgun.org', {},

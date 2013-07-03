@@ -166,6 +166,10 @@ exports.apiDocs = function(req,res){
 	res.render('api-docs',{title: 'API Docs', user: req.user, message: req.flash('info'), error: req.flash('error')})
 }
 
+exports.apiInfo = function(req,res){
+	res.render('api-info',{title: 'API Infomation', user: req.user, message: req.flash('info'), error: req.flash('error')})
+}
+
 exports.regenKey = function(req,res){
 	Account.findById(req.user._id, function(err, account){
 		account.key = ( Math.random().toString(36).substr(2) + Math.random().toString(36).substr(2) )
