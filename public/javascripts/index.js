@@ -15,6 +15,3 @@ window.onload = function() {
       }
   });
 }
-
-
-

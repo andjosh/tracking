@@ -3,9 +3,9 @@ extends layout
 block content
 
 	if message
-		p.pull-center.message #{message}
+		p#message.pull-center.message #{message}
 	if error
-		p.pull-center.error #{error}
+		p#error.pull-center.error #{error}
 
 	.main.pure-g-r.container
 		if (!user)
@@ -19,6 +19,26 @@ block content
 				p Track your progress on <strong>anything</strong> you can quantify.
 
 		if user
+			.pure-u-1-12
+			.pure-u-1-3.pull-center
+				form(action="/add-datum", method="post")
+					- var d = new Date, day = d.getDate(), month = d.getMonth()+1, year = d.getFullYear();
+					if (month < 10)
+						- month = '0'+month;
+					if (day < 10)
+						- day = '0'+day;
+					.pure-u-3-4
+						input(type="text", data-provide="typeahead", name="category", placeholder="Name/Category", data-source='[#{ categories }]')
+					.pure-u-1-4
+						input.numeric(type="float", name="quantity", placeholder="Quantity")
+					#past-date.hidden
+						input(type="date", name="date", value="#{year+'-'+month+'-'+day}", placeholder="YYYY-MM-DD")
+					input(type="hidden", name="account", value=user._id)
+					#submit
+						input(type="submit", value="Add Data")
+					.pure-u-1.pull-left
+						a.btn(onClick="addPastData()") Add past data
+			.pure-u-1-12
 			.pure-u-1-2.pull-center
 					if user.username
 						h2.thin.no-mobile #{ user.username }, #{title}
@@ -34,15 +54,6 @@ block content
 						p It will make everything easier down the road.
 					a.btn.md-trigger(data-modal="modal-intro") How to enter data
 
-			.pure-u-1-3.pull-center
-				form(action="/add-datum", method="post")
-					.pure-u-3-4
-						input(type="text", data-provide="typeahead", name="category", placeholder="Name/Category", data-source='[#{ categories }]')
-					.pure-u-1-4
-						input.numeric(type="float", name="quantity", placeholder="Quantity")
-					input(type="hidden", name="account", value=user._id)
-					#submit
-						input(type="submit", value="Add Data")
 			.main.pure-g-r
 				.pure-u-1-3
 				.pure-u-1-3.pull-center

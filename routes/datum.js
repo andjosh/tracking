@@ -45,25 +45,58 @@ exports.upDatum = function(io) {
             io.sockets.emit('newCategories', { names: catList });
           });
         });
-				Datum.update(conditions, {quantity: req.body.quantity}, {category: newCategory._id}, {categoryName: newCategory.name}, function upDated(err) {
+        var month = (req.body.date[5]+req.body.date[6])-1;
+        var day = req.body.date[8]+req.body.date[9];
+        var year = req.body.date[0]+req.body.date[1]+req.body.date[2]+req.body.date[3];
+        var updates = {
+          quantity: req.body.quantity, 
+          date: new Date(
+            year,
+            month, 
+            day
+          ),
+          category: newCategory._id, 
+          categoryName: newCategory.name
+        };
+				Datum.update(conditions, updates, function upDated(err) {
           if(err) {
             req.flash('error', 'There was a problem in saving that information')
             res.redirect('/datum/'+req.params.id);
             throw err;
+          }
+          else{
+            req.flash('info', 'Updated!')
+            res.redirect('/datum/'+req.params.id);
           }
         });
       }
       if (categoryFound) {
-        Datum.update(conditions, {quantity: req.body.quantity}, {category: categoryFound._id}, {categoryName: categoryFound.name}, function upDated(err) {
+        var month = (req.body.date[5]+req.body.date[6])-1;
+        var day = req.body.date[8]+req.body.date[9];
+        var year = req.body.date[0]+req.body.date[1]+req.body.date[2]+req.body.date[3];
+        var updates = {
+          quantity: req.body.quantity, 
+          date: new Date(
+            year,
+            month, 
+            day
+          ),
+          category: categoryFound._id, 
+          categoryName: categoryFound.name
+        };
+        Datum.update(conditions, updates, function upDated(err) {
           if(err) {
             req.flash('error', 'There was a problem in saving that information')
             res.redirect('/datum/'+req.params.id);
             throw err;
           }
+          else{
+            console.log('yay! updated')
+            req.flash('info', 'Updated!')
+            res.redirect('/datum/'+req.params.id);
+          }
         });
       }
-      req.flash('info', 'Updated!')
-      res.redirect('/datum/'+req.params.id);
     });
   };
 };
@@ -126,11 +159,17 @@ exports.postDatum = function(io) {
 					newDatum.category = newCategory._id;
 					newDatum.categoryName = newCategory.name;
 					newDatum.account  = req.user._id;
+          if(req.body.date){
+            month = req.body.date[5]+req.body.date[6];
+            day = req.body.date[8]+req.body.date[9];
+            year = req.body.date[0]+req.body.date[1]+req.body.date[2]+req.body.date[3];
+            newDatum.date = new Date(year, month-1, day);
+          }
 					newDatum.save(function(err, resultDatum){
 						if(err) {
 							throw err;
 						}
-						console.log(resultDatum._id+' datum created')
+						console.log(resultDatum._id+' datum created for '+resultDatum.date)
 					});
 				}
 				if (categoryFound) {
@@ -141,11 +180,17 @@ exports.postDatum = function(io) {
 					newDatum.category = categoryFound._id;
 					newDatum.categoryName = categoryFound.name;
 					newDatum.account  = req.user._id;
+          if(req.body.date){
+            month = req.body.date[5]+req.body.date[6];
+            day = req.body.date[8]+req.body.date[9];
+            year = req.body.date[0]+req.body.date[1]+req.body.date[2]+req.body.date[3];
+            newDatum.date = new Date(year, month-1, day);
+          }
 					newDatum.save(function(err, resultDatum){
 						if(err) {
 							throw err;
 						}
-						console.log(resultDatum._id+' datum created')
+						console.log(resultDatum._id+' datum created for '+resultDatum.date)
 					});
 				}
 				req.flash('info', 'Data tracked!')

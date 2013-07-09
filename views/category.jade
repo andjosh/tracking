@@ -37,20 +37,29 @@ block content
 		.pure-u-1-6
 		.pure-u-1-3
 			form(action="/add-datum", method="post").pure-g-r
+				- var d = new Date, day = d.getDate(), month = d.getMonth()+1, year = d.getFullYear();
+				if (month < 10)
+					- month = '0'+month;
+				if (day < 10)
+					- day = '0'+day;
 				.pure-u-3-4
 					#category
 						p.underline #{category.name}
 						input(type="hidden", data-provide="typeahead", name="category", placeholder="Name/Category", value='#{ category.name }')
 				.pure-u-1-4
 					input.numeric(type="float", name="quantity", placeholder="Quantity")
+				#past-date.hidden
+					input(type="date", name="date", value="#{year+'-'+month+'-'+day}", placeholder="YYYY-MM-DD")
 				input(type="hidden", name="account", value='#{user._id}')
 				#submit
-				input(type="submit", value="Add #{category.name}")
+					input(type="submit", value="Add #{category.name}")
+				.pure-u-1
+					a.btn(onClick="addPastData()") Add past data
 		.pure-u-1-3
 			h4.pull-center Your History
 			- for d in theData.reverse()
 				p.pull-center
-					a(href="/datum/#{d._id}") #{d.quantity} <small>on</small> #{d.date.getMonth()}/#{d.date.getDate()}/#{d.date.getFullYear()}
+					a(href="/datum/#{d._id}") #{d.quantity} <small>on</small> #{d.date.getMonth()+1}/#{d.date.getDate()}/#{d.date.getFullYear()}
 	script(src="http://d3js.org/d3.v3.min.js")
 	script(src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
 	script(src='/javascripts/numeric.js')

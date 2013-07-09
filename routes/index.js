@@ -22,15 +22,15 @@ exports.index = function(io) {
 	return function(req,res) {
 
 		if (req.user)  {
-			console.log('User is ' + req.user.email)
 			if (req.user.birthdate){
 				ageTimer();
-				var userAge = new Date(req.user.birthdate);
+				var userAge = new Date(req.user.birthdate), i = 0;
 				function newAge() {
 					var now = new Date();
 					var aged = Math.round((now - userAge)/(1000*60*60*24*365.25)*10000000)/10000000;
 					io.sockets.emit('newAge'+req.user._id, { years: aged });
-					ageTimer();
+					i++;
+					if(i<60){ageTimer();}
 				};
 				function ageTimer() {
 					setTimeout(newAge, 1000);

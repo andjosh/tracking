@@ -33,6 +33,8 @@ block content
 								- var month = user.birthdate.getMonth() + 1;
 								if (month < 10)
 									- month = '0'+month;
+								if (day < 10)
+									- day = '0'+day;
 								- var year  = user.birthdate.getFullYear();
 							input(onBlur="bdChecker()", type="text", name="birthdate", placeholder="Birthdate (MM/DD/YYYY)", maxlength="10", value="#{ user.birthdate ? (month + '/' + day + '/' + year) : '' }")
 					.pure-u-1-2
