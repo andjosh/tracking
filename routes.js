@@ -49,7 +49,7 @@ module.exports = function (app) {
               return res.redirect('/register');
           }
           // Welcome email
-          mg.sendText('info@ontrack.io', [req.body.email, 'jsh@bckmn.com'],
+          mg.sendText('josh@ontrack.io', [req.body.email],
             'Get On track!',
             'Congratulations on wanting to get on track! '+
             'You can always track yourself, every day, on http://ontrack.io '+
