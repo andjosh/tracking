@@ -15,7 +15,7 @@ block content
 	.pure-g-r
 		.pure-u-1-4
 		.pure-u-1-2.pull-center
-			h2.sans <small>Your daily</small> #{category.name} <small>since</small> #{month}/#{day}/#{year}
+			h2.sans <small>Your daily</small> #{category.name}
 		.pure-u-1-4
 
 	#graph(style="height:300px;").pull-center
@@ -23,17 +23,18 @@ block content
 		- for d in theirData
 			- sum += d;
 		- sum = (sum/theirData.length);
-		- var data = [], dumb = [];
+		- var data = [], dumb = [], ave = 0;
 		- for d in theData
-			- data.push(d.quantity);dumb.push(sum);
+			- data.push(d.quantity);dumb.push(sum);ave += d.quantity;
+		- ave = (ave/theData.length)
 		- var max_of_array = Math.max.apply(Math, data), min_of_array = Math.min.apply(Math, data);
 		- var taDate = theData[theData.length-1].date.getDate(), taMonth = theData[theData.length-1].date.getMonth(), toDate = (new Date).getDate(), toMonth = (new Date).getMonth();
-		span Dataset: #{data.length} | Max: #{max_of_array} | Min: #{min_of_array} | Latest: #{theData[theData.length-1].quantity}
+		span Dataset: #{data.length} | Max: #{max_of_array} | Min: #{min_of_array} | Ave: #{ave} | Latest: #{theData[theData.length-1].quantity}
 			if ((taDate == toDate) && (taMonth == toMonth))
 				small  (today)
 		br
 		small Average for your age and gender: #{sum} (grey line)
-	.second-main.pure-g-r
+	#stuff.second-main.pure-g-r
 		.pure-u-1-6
 		.pure-u-1-3
 			form(action="/add-datum", method="post").pure-g-r
@@ -64,16 +65,18 @@ block content
 	script(src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
 	script(src='/javascripts/numeric.js')
 	script(src='/javascripts/add-datum.js')
+	#divvy.tooltip(style='opacity:0;')
 	script
 		console.log(#{theirData});
 		// create an SVG element inside the #graph div that fills 100% of the div
 		var div = document.getElementById("graph");
 		var graph = d3.select("#graph").append("svg:svg").attr("width", "100%").attr("height", "100%");
-
+		var max   = d3.max([#{data}]), min = d3.min([#{data}]);;
 		// create a simple data array that we'll plot with a line (this array represents only the Y values, X will just be the index location)
 		var data = [#{data}], dumb = [#{dumb}];console.log('sum = '+#{sum}+', '+#{sum});
 								console.log('max = '+#{max_of_array}+', min = '+#{min_of_array}+', and length = '+data.length)
-
+		var divvy = d3.select("#divvy");
+		console.log(divvy)
 		// X scale will fit values from 0-10 within pixels 0-100
 		var x = d3.scale.linear().domain([0, data.length]).range([(div.offsetWidth/12), (div.offsetWidth)]);
 		// Y scale will fit values from 0-10 within pixels 0-100
@@ -110,10 +113,41 @@ block content
 		.attr("fill", "none")
 		.attr("d", line(dumb))
 		.attr("id", "myPath")
-		.on("mousemove", mMove)
 		.transition().duration(1000).attr("d", line(data))
 		.ease('bounce');
-		function mMove(){
-		var m = d3.mouse(this);
-		d3.select("#myPath").select("title").text(m);
-		};
+
+		graph.selectAll('.point')
+		.data(data).enter()
+		.append("svg:circle")
+		.attr("class", function(d, i) {if (d === max) {return 'point max';} else {return 'point';}})
+		.attr("cx", function(d, i) {
+			return x(i);
+		})
+		.attr("cy", function(d) {
+			return y(d);
+		})
+		.attr("r", function(d, i) {
+			if ((d === max)||(d === min)) {
+				return 6;
+			} else {
+				return 3;
+			}
+		}).attr("fill", "rgba(56,70,130,0.1)").attr("stroke", "rgba(56,70,130,0.4)")
+		.on('mouseover', function() {
+			d3.select(this).attr('r', 8).attr("fill", "rgba(56,70,130,0.3)").attr("stroke", "rgba(56,70,130,0.5)");
+		})
+		.on('mouseout', function() {
+			return d3.select(this).attr('r', function(d, i) {
+				if ((d === max)||(d === min)) {
+					return 8;
+				} else {
+					return 3;
+				}
+			});
+		})
+		.on('click', function(d, i) {
+			divvy.transition().duration(200).style("opacity", .75);
+			divvy.html(d.toString())
+			.style("left", (d3.event.pageX) + "px")     
+			.style("top", (d3.event.pageY - 28) + "px");  
+		});

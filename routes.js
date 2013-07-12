@@ -172,7 +172,7 @@ module.exports = function (app) {
 								if (da.account){
 									if(da.account.gender == req.user.gender){
 										var bday = new Date(da.account.birthdate), myday = new Date(req.user.birthdate);
-										if( ((bday-myday) < 15724800000) || ((myday-bday) < 15724800000) ){
+										if( ((bday-myday) < 31536000000) || ((myday-bday) < 31536000000) ){
 											theirData.push(da.quantity)
 										}
 									}
