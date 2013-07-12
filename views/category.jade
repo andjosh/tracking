@@ -22,11 +22,11 @@ block content
 		- var sum = 0;
 		- for d in theirData
 			- sum += d;
-		- sum = (sum/theirData.length);
+		- sum = (Math.round((sum/theirData.length)*10)/10);
 		- var data = [], dumb = [], ave = 0;
 		- for d in theData
 			- data.push(d.quantity);dumb.push(sum);ave += d.quantity;
-		- ave = (ave/theData.length)
+		- ave = (Math.round((ave/theData.length)*10)/10)
 		- var max_of_array = Math.max.apply(Math, data), min_of_array = Math.min.apply(Math, data);
 		- var taDate = theData[theData.length-1].date.getDate(), taMonth = theData[theData.length-1].date.getMonth(), toDate = (new Date).getDate(), toMonth = (new Date).getMonth();
 		span Dataset: #{data.length} | Max: #{max_of_array} | Min: #{min_of_array} | Ave: #{ave} | Latest: #{theData[theData.length-1].quantity}
@@ -132,9 +132,13 @@ block content
 			} else {
 				return 3;
 			}
-		}).attr("fill", "rgba(56,70,130,0.1)").attr("stroke", "rgba(56,70,130,0.4)")
-		.on('mouseover', function() {
+		}).attr("fill", "rgba(56,70,130,0)").attr("stroke", "rgba(56,70,130,0.4)")
+		.on('mouseover', function(d) {
 			d3.select(this).attr('r', 8).attr("fill", "rgba(56,70,130,0.3)").attr("stroke", "rgba(56,70,130,0.5)");
+			divvy.transition().duration(200).style("opacity", .75);
+			divvy.html(d.toString())
+			.style("left", (d3.event.pageX) + "px")     
+			.style("top", (d3.event.pageY - 28) + "px");
 		})
 		.on('mouseout', function() {
 			return d3.select(this).attr('r', function(d, i) {
