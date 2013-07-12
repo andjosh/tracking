@@ -42,6 +42,9 @@ input{
 .btn-full, button{
 	width: 100%;
 }
+.mini{
+  padding: 0 0.3em !important;
+}
 input[type="checkbox"], input[type="radio"] {
 	width: auto;
 	margin: 0.5em;
@@ -218,6 +221,12 @@ div.tooltip {
   border: 0px;      
   border-radius: 8px;           
   pointer-events: none;         
+}
+.other{
+  opacity: 0;
+  -webkit-transition: all 1s;
+  -moz-transition: all 1s;
+  transition: all 1s;
 }
 
 /* Respond! */

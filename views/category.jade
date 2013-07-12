@@ -12,7 +12,7 @@ block content
 	if (month < 10)
 		- month = '0'+month;
 	- var year  = theData[0].date.getFullYear();
-	.pure-g-r
+	.pure-g-r.otherly
 		.pure-u-1-4
 		.pure-u-1-2.pull-center
 			h2.sans <small>Your daily</small> #{category.name}
@@ -29,12 +29,13 @@ block content
 		- ave = (Math.round((ave/theData.length)*10)/10)
 		- var max_of_array = Math.max.apply(Math, data), min_of_array = Math.min.apply(Math, data);
 		- var taDate = theData[theData.length-1].date.getDate(), taMonth = theData[theData.length-1].date.getMonth(), toDate = (new Date).getDate(), toMonth = (new Date).getMonth();
-		span Dataset: #{data.length} | Max: #{max_of_array} | Min: #{min_of_array} | Ave: #{ave} | Latest: #{theData[theData.length-1].quantity}
+		span.otherly Dataset: #{data.length} | Max: #{max_of_array} | Min: #{min_of_array} | Ave: #{ave} | Latest: #{theData[theData.length-1].quantity}
 			if ((taDate == toDate) && (taMonth == toMonth))
 				small  (today)
 		br
-		small Average for your age and gender: #{sum} (grey line)
-	#stuff.second-main.pure-g-r
+		small.otherly Average for your age and gender: #{sum} (grey line)<br>
+			a.btn.mini(onClick='onlyGraph()') Only the Graph
+	#stuff.second-main.pure-g-r.otherly
 		.pure-u-1-6
 		.pure-u-1-3
 			form(action="/add-datum", method="post").pure-g-r
@@ -76,7 +77,6 @@ block content
 		var data = [#{data}], dumb = [#{dumb}];console.log('sum = '+#{sum}+', '+#{sum});
 								console.log('max = '+#{max_of_array}+', min = '+#{min_of_array}+', and length = '+data.length)
 		var divvy = d3.select("#divvy");
-		console.log(divvy)
 		// X scale will fit values from 0-10 within pixels 0-100
 		var x = d3.scale.linear().domain([0, data.length]).range([(div.offsetWidth/12), (div.offsetWidth)]);
 		// Y scale will fit values from 0-10 within pixels 0-100
@@ -155,3 +155,10 @@ block content
 			.style("left", (d3.event.pageX) + "px")     
 			.style("top", (d3.event.pageY - 28) + "px");  
 		});
+
+		function onlyGraph() {
+			var x = document.getElementsByClassName('otherly');
+			for (var i=0;i<x.length;i++){
+				x[i].className += ' other';
+			}
+		};
