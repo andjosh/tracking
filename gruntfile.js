@@ -22,9 +22,7 @@ module.exports = function(grunt) {
     var done = this.async();
     // Connect mongoose
     mongoose.connect(mongoUri);
-    console.log('message1');
     Account.count( function foundUsers(err, accounts) {
-      console.log(accounts);
       mg.sendText('info@ontrack.io', ['jsh@bckmn.com'],
         'OnTrack Update',
         'There are currently '+accounts.toString()+' active accounts OnTrack.'+
@@ -36,6 +34,16 @@ module.exports = function(grunt) {
         }
       );
     });
+  });
+
+  grunt.registerTask('consolidateDupeDates', 'remedy users entering multiple quantities under the same category for the same date', function() {
+    // Invoke async mode
+    var done = this.async();
+    // Connect mongoose
+    mongoose.connect(mongoUri);
+    // Actually need to determine if this is necessay. 
+    // Maybe there are cases where users want to track 
+    // multiple occurrences fo a category for each day.
   });
 
 };

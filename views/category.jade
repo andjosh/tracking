@@ -96,7 +96,7 @@ block content
 		// console.log('Plotting Y value for data point: ' + d + ' to be at: ' + y(d) + " using our yScale.");
 		// return the Y coordinate where we want to plot this datapoint
 		return y(d);
-		}).interpolate("monotone")
+		}).interpolate("monotone");
 
 		// display the line by appending an svg:path element with the data line we created above
 		graph.append("svg:path")
