@@ -60,7 +60,7 @@ exports.index = function(io) {
 							categories.forEach(function(cat) {
 								catList.push('"'+cat.name+'"')
 							});
-							res.render('index',{title: 'On Track', user: req.user, foundCats: finalCats, categories: catList, message: req.flash('info'), error: req.flash('error')})
+							res.render('index',{title: 'OnTrack.io', user: req.user, foundCats: finalCats, categories: catList, message: req.flash('info'), error: req.flash('error')})
 						})
 					}
 				]);
@@ -71,14 +71,14 @@ exports.index = function(io) {
 							categories.forEach(function(cat) {
 								catList.push('"'+cat.name+'"')
 							});
-							res.render('index',{title: 'On Track', user: req.user, foundCats: [], categories: catList, message: req.flash('info'), error: req.flash('error')})
+							res.render('index',{title: 'OnTrack.io', user: req.user, foundCats: [], categories: catList, message: req.flash('info'), error: req.flash('error')})
 					})
 				};
 			});
 		}
 		if (!req.user){
 			var range = range1(15); var graphable = shuffle(range);
-			res.render('index',{title: 'On Track', graphable: graphable, message: req.flash('info'), error: req.flash('error')})
+			res.render('index',{title: 'OnTrack.io', graphable: graphable, message: req.flash('info'), error: req.flash('error')})
 		}
   };
 };
