@@ -190,6 +190,7 @@ code {background-color:#eee;padding:0.4em 0.6em;}
   -ms-transform: scale(0.8);
   transform: scale(0.8);
   opacity: 0;
+  padding: 0.5em;
   -webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
   transition: all 0.3s;

@@ -8,18 +8,23 @@ block content
 		p.pull-center.error #{error}
 
 	#main.pure-g-r
-		.pure-u-1-2.pull-center
-			h1.thin
+		.pure-u-1-4
+		.pure-u-1-2
+			h1.thin.pull-center
 				a(href="/") OnTrack.io
 			p#about
-			h2.sans #{title}
-			a.btn(href="/login") Log In or Register
-		.pure-u-1-2
-			h2.thin.pull-center Everyone likes a graph.
-			h3 Harness the power of insight into your own data, along with the data of your demographic.
-			p Everyone has access to your data, but <strong>only you</strong> have access to your personal information.
+			h2.sans.pull-center #{title}
+			
+			h2.thin Harness the power of insight into your own data.
+			blockquote
+				| Quantify yourself and your routines to gain a greater perspective and powerful, actionable knowledge. 
+				| Compare yourself to your demographic for reference.
+			p With <a href="/">OnTrack.io</a>, everyone can benefit from your data, but <strong>only you</strong> have access to your personal information.
+			p Start using <a href="/">OnTrack.io</a> to monitor any category or factor in your life that you can quantify. People are using <a href="/">OnTrack.io</a> to monitor their <strong>bodyweight</strong>, <strong>step counts</strong>
+			hr
 			p Your data points will merge with the societal sea of data and allow for a level of demographic measurement and assessment never before possible across the population.
 			p The sociological, medical and biological research that is possible with such an organized, comprehensive and quantitative view of the population is unavailable with current data collection.
-			p More information about the robust OnTrack.io API can be found on the <a href="/api">API info page</a>.
+			p More information about the robust <a href="/api/version">OnTrack.io API</a> can be found on the <a href="/api">API info page</a>.
+			a.btn(href="/login") Log In or Register
 			hr
 			blockquote Questions, concerns and letters are welcome and can be sent directly from the <a href="/contact">contact form</a>.

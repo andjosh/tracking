@@ -20,6 +20,7 @@
     "jade": "*",
     "bcrypt": "*",
 		"grunt": "~0.4.1",
+    "grunt-cli": "*",
     "connect-flash": "*",
     "passport": "*",
     "passport-local": "*",
