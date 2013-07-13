@@ -228,6 +228,12 @@ div.tooltip {
   -moz-transition: all 1s;
   transition: all 1s;
 }
+.immune {
+  opacity: 1;
+  -webkit-transition: all 1s;
+  -moz-transition: all 1s;
+  transition: all 1s;
+}
 
 /* Respond! */
 @media only screen and (max-width: 768px) {

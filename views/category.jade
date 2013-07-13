@@ -12,7 +12,7 @@ block content
 	if (month < 10)
 		- month = '0'+month;
 	- var year  = theData[0].date.getFullYear();
-	.pure-g-r.otherly
+	.pure-g-r
 		.pure-u-1-4
 		.pure-u-1-2.pull-center
 			h2.sans <small>Your daily</small> #{category.name}
@@ -23,18 +23,18 @@ block content
 		- for d in theirData
 			- sum += d;
 		- sum = (Math.round((sum/theirData.length)*10)/10);
-		- var data = [], dumb = [], ave = 0;
+		- var data = [], dumb = [], avg = 0;
 		- for d in theData
-			- data.push(d.quantity);dumb.push(sum);ave += d.quantity;
-		- ave = (Math.round((ave/theData.length)*10)/10)
+			- data.push(d.quantity);dumb.push(sum);avg += d.quantity;
+		- avg = (Math.round((avg/theData.length)*10)/10)
 		- var max_of_array = Math.max.apply(Math, data), min_of_array = Math.min.apply(Math, data);
 		- var taDate = theData[theData.length-1].date.getDate(), taMonth = theData[theData.length-1].date.getMonth(), toDate = (new Date).getDate(), toMonth = (new Date).getMonth();
-		span.otherly Dataset: #{data.length} | Max: #{max_of_array} | Min: #{min_of_array} | Ave: #{ave} | Latest: #{theData[theData.length-1].quantity}
+		span.otherly Dataset: #{data.length} | Max: #{max_of_array} | Min: #{min_of_array} | Avg: #{avg} | Latest: #{theData[theData.length-1].quantity}
 			if ((taDate == toDate) && (taMonth == toMonth))
 				small  (today)
 		br
 		small.otherly Average for your age and gender: #{sum} (grey line)<br>
-			a.btn.mini(onClick='onlyGraph()') Only the Graph
+			
 	#stuff.second-main.pure-g-r.otherly
 		.pure-u-1-6
 		.pure-u-1-3
@@ -116,6 +116,18 @@ block content
 		.transition().duration(1000).attr("d", line(data))
 		.ease('bounce');
 
+		graph.on('mouseover', function() {
+			var x = document.getElementsByClassName('otherly');
+			for (var i=0;i<x.length;i++){
+				x[i].className = ' otherly other';
+			};
+		}).on('mouseout', function() {
+			var x = document.getElementsByClassName('otherly');
+			for (var i=0;i<x.length;i++){
+				x[i].className = ' otherly immune';
+			};
+		});
+
 		graph.selectAll('.point')
 		.data(data).enter()
 		.append("svg:circle")
@@ -155,10 +167,16 @@ block content
 			.style("left", (d3.event.pageX) + "px")     
 			.style("top", (d3.event.pageY - 28) + "px");  
 		});
-
+		var count = 0;
 		function onlyGraph() {
 			var x = document.getElementsByClassName('otherly');
-			for (var i=0;i<x.length;i++){
-				x[i].className += ' other';
+			if (count%2 === 0){
+				for (var i=0;i<x.length;i++){
+					x[i].className += ' other';
+				}count++;
+			}else{
+				for (var i=0;i<x.length;i++){
+					x[i].className += ' immune';
+				}count++;
 			}
 		};
