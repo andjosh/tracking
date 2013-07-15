@@ -15,3 +15,9 @@ window.onload = function() {
       }
   });
 }
+function preloadDatum(text, classic) {
+  var x = document.getElementsByName('category')[0], y = document.getElementsByClassName(classic)[0];
+  x.value = text;
+  x.setAttribute('style', 'background:#eef0fa;transition: 0.3s;-moz-transition: 0.3s;-webkit-transition: 0.3s;-o-transition: 0.3s;');
+  y.setAttribute('style', 'position:relative;z-index:-1000;opacity:0;transition: 0.5s;-moz-transition: 0.5s;-webkit-transition: 0.5s;-o-transition: 0.5s;')
+}
