@@ -237,19 +237,24 @@ module.exports = function (app) {
 		app.post('/off-track/categories/:id', ensureAdmin, function(req,res){
 			Category.findById(req.body.migrateId, function(err,category){
 				Datum.find({category: req.params.id}, function(err, data){
+          var errored = false
 					data.forEach(function(datum){
 						datum.category = req.body.migrateId;
 						datum.categoryName = category.name;
 						datum.save(function(err,saved){
 							if (err){
-								req.flash('error', 'There was a problem in saving that information')
-								res.redirect('/off-track/categories/'+req.params.id);
+                errored = true
 								throw err;
 							}
-							req.flash('info', 'Updated!')
-							res.redirect('/off-track/categories/'+req.params.id);
 						})
 					})
+          if (errored){
+            req.flash('error', 'There was a problem in saving that information')
+          }
+          if (!errored){
+            req.flash('info', 'Updated!')
+          }
+          res.redirect('/off-track/categories/'+req.params.id);
 				})
 			})
 		})
