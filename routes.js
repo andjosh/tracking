@@ -43,14 +43,15 @@ module.exports = function (app) {
         req.flash('error', 'Password and password confirmation must match.')
         res.redirect('/register');
       }
-      Account.register(new Account({ email : req.body.email }), req.body.password, function(err, account) {
+      Account.register(new Account({ email : req.body.email, username: req.body.email.match(/^[^@]*/) }), req.body.password, function(err, account) {
           if (err) {
               req.flash('error', 'That email is already in use.')
               return res.redirect('/register');
           }
+          var name = req.body.email.match(/^[^@]*/)
           // Welcome email
           mg.sendText('josh@ontrack.io', [req.body.email],
-            'Get On track!',
+            'Get OnTrack.io!','Hi '+name+'! '+
             'Congratulations on wanting to get on track! '+
             'You can always track yourself, every day, on http://ontrack.io '+
             'Thanks! '+
@@ -61,6 +62,7 @@ module.exports = function (app) {
               else     console.log('Successful Welcome email');
           });
           // Then redirect
+          passport.authenticate('local', { failureRedirect: '/login', failureFlash: 'Invalid email or password.' })
           req.flash('info', 'Great! Now log in using the account you just created.')
           res.redirect('/account');
       });
