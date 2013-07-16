@@ -74,13 +74,13 @@ block content
 					.pure-u-1-5.pull-center
 						a(onClick='preloadDatum("Mood (max 10)", "mood")').btn.mood Mood (max 10)
 
-			script(src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
+			script(src="/javascripts/jquery.js")
 			script(src='/javascripts/numeric.js')
 			script(src='/javascripts/add-datum.js')
 			script(src='/javascripts/index.js')
 
 		if (!user)
-			script(src="http://d3js.org/d3.v3.min.js")
+			script(src="/javascripts/d3.v3.min.js")
 			#graph(style="height:200px;").pull-center
 				- var sum = 0;
 				- for d in graphable

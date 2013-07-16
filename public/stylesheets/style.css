@@ -1,5 +1,5 @@
 @import url("http://fonts.googleapis.com/css?family=Lato:300,700");
-@import url("http://yui.yahooapis.com/pure/0.2.0/pure-min.css");
+@import url("./pure-min.css");
 body {
   font: 15px "Lato", Helvetica, sans-serif;
   font-weight: 300;

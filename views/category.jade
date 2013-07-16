@@ -64,8 +64,8 @@ block content
 			- for d in theData.reverse()
 				p.pull-center
 					a(href="/datum/#{d._id}") #{d.quantity} <small>on</small> #{weekday[d.date.getDay()]}, #{d.date.getMonth()+1}/#{d.date.getDate()}/#{d.date.getFullYear()}
-	script(src="http://d3js.org/d3.v3.min.js")
-	script(src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
+	script(src="/javascripts/d3.v3.min.js")
+	script(src="/javascripts/jquery.js")
 	script(src='/javascripts/numeric.js')
 	script(src='/javascripts/add-datum.js')
 	#divvy.tooltip(style='opacity:0;')
