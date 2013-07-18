@@ -57,9 +57,12 @@ block content
 					.pure-u-1-3.pull-center
 						h2.thin You are tracking
 					.pure-u-1-3
-					for cat in foundCats
+					for cat in foundCats.sort(function(a,b){if(a.name < b.name) return -1; if(a.name > b.name) return 1; return 0;})
+						- var color = 'eee', color2 = '222';
+						if (cat._id)
+							- color = cat._id.toString().slice(0,6), color2 = '000';
 						.pure-u-1-5.pull-center
-							a(href="/category/#{cat._id}").btn #{cat.name}
+							a(href="/category/#{cat._id}", style="background:##{color};color:##{color2}").btn #{cat.name}
 			if (foundCats.length < 1)
 				.main.pure-g-r
 					.pure-u-1-3
