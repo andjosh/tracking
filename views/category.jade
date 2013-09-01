@@ -34,30 +34,10 @@ block content
 				small  (today)
 		br
 		small.otherly Average for your age and gender: #{sum} (grey line)<br>
-			
+
 	#stuff.second-main.pure-g-r.otherly
-		.pure-u-1-6
-		.pure-u-1-3
-			form(action="/add-datum", method="post").pure-g-r
-				- var d = new Date, day = d.getDate(), month = d.getMonth()+1, year = d.getFullYear();
-				if (month < 10)
-					- month = '0'+month;
-				if (day < 10)
-					- day = '0'+day;
-				.pure-u-3-4
-					#category
-						p.underline #{category.name}
-						input(type="hidden", data-provide="typeahead", name="category", placeholder="Name/Category", value='#{ category.name }')
-				.pure-u-1-4
-					input.numeric(type="float", name="quantity", placeholder="Quantity")
-				#past-date.hidden
-					input(type="date", name="date", value="#{year+'-'+month+'-'+day}", placeholder="YYYY-MM-DD")
-				input(type="hidden", name="account", value='#{user._id}')
-				#submit
-					input(type="submit", value="Add #{category.name}")
-				.pure-u-1
-					a.btn(onClick="addPastData()") Add past data
-		.pure-u-1-3
+		.pure-u-1-4
+		.pure-u-1-2
 			h4.pull-center Your History
 			- var weekday=new Array(7);
 			- weekday[0]="Sunday";weekday[1]="Monday";weekday[2]="Tuesday";weekday[3]="Wednesday";weekday[4]="Thursday";weekday[5]="Friday";weekday[6]="Saturday";

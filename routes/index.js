@@ -39,28 +39,30 @@ exports.index = function(io) {
 
 			Datum.find({account: req.user._id}, 'category').distinct('category', function(err,foundCats){
 				if (err){console.log('Error: '+err)}
-				var finalCats = [];
+				var finalData = [];
+				var start = new Date, start = start.setMonth(start.getMonth()-1);
 				async.series([
 					function(callback){
-							foundCats.forEach(function(cat){
-								Category.findById(cat, '_id name', function(err, endCat){
-									if (!endCat){
-										finalCats.push('')
-									}
-									else {
-										finalCats.push(endCat);
-									}
-									if (finalCats.length == foundCats.length){callback(null)}
-								})
+						foundCats.forEach(function(cat){
+							Datum.find({account: req.user._id, category: cat}, null, {sort: 'date'}).lean().exec(function(err, dataSet){
+								if (!dataSet){
+									finalData.push('')
+								}
+								else {
+									finalData.push(dataSet);
+								}
+								console.log(dataSet)
+								if (finalData.length == foundCats.length){callback(null)}
 							})
+						})
 					},
 					function(callback){
-						Category.find( function foundCategories(err, categories) {
+						Category.find(null, 'name', function foundCategories(err, categories) {
 							var catList = [];
 							categories.forEach(function(cat) {
 								catList.push('"'+cat.name+'"')
 							});
-							res.render('index',{title: 'OnTrack.io', user: req.user, foundCats: finalCats, categories: catList, message: req.flash('info'), error: req.flash('error')})
+							res.render('index',{title: 'OnTrack.io', user: req.user, finalData: finalData, categories: catList, message: req.flash('info'), error: req.flash('error')})
 						})
 					}
 				]);

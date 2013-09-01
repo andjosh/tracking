@@ -25,25 +25,49 @@ html
     if user
       meta(name="uid", content="#{user._id}")
   body
+    if message.length > 0
+      p#message.pull-center.message #{message}
+    if error.length > 0
+      p#error.pull-center.error #{error}
     .pure-g-r
-      .pure-u-1-3
-      .pure-u-1-3
-        .pure-menu.pure-menu-open.pure-menu-horizontal.pull-center
+      .pure-u-1-2
+        .pure-menu.pure-menu-open.pure-menu-horizontal
           ul.otherly
+            li
+              a.brand-nav(href="/") OnTrack.io
             if user
               li
                 a(href="/account")= "Your Track"
             if (!user)
               li
                 a(href="/login") Log In
-            li
-              a(href="/")= "Home"
             if user
               li
                 a(href="/logout")= "Log Out"
             if (!user)
               li
                 a(href="/about")= "About"
+      if user
+        .pure-u-1-2
+          form.nav-input(action="/add-datum", method="post")
+            - var d = new Date, day = d.getDate(), month = d.getMonth()+1, year = d.getFullYear();
+            if (month < 10)
+              - month = '0'+month;
+            if (day < 10)
+              - day = '0'+day;
+            .pure-g-r
+              .pure-u-1-3
+                input(type="text", data-provide="typeahead", name="category", placeholder="Category", data-source='[#{ categories }]', value='#{ category !== undefined ? category.name : ""}')
+              .pure-u-1-6
+                input.numeric(type="float", name="quantity", placeholder="Quantity")
+              .pure-u-1-3.past-data.pull-center
+                a(onClick="addPastData()", href="#past-data") Past data
+                #past-date.hidden
+                  input(type="date", name="date", value="#{year+'-'+month+'-'+day}", placeholder="YYYY-MM-DD")
+              input(type="hidden", name="account", value=user._id)
+              .pure-u-1-6
+                #submit
+                  input(type="submit", value="Add Data")
 
     block content
 

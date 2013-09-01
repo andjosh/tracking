@@ -2,11 +2,6 @@ extends layout
 
 block content
 
-	if message
-		p.pull-center.message #{message}
-	if error
-		p.pull-center.error #{error}
-
 	#main.pure-g-r
 		.pure-u-1-4
 		.pure-u-1-2
@@ -15,7 +10,7 @@ block content
 			p#about
 			h2.sans.pull-center #{title}
 			
-			h2.thin Harness the power of insight into your own data.
+			h2.thin.pull-center Harness the power of insight into your own data.
 			blockquote
 				| Quantify yourself and your routines to gain a greater perspective and powerful, actionable knowledge. 
 				| Compare yourself to your demographic for reference.
@@ -25,6 +20,7 @@ block content
 			p Your data points will merge with the societal sea of data and allow for a level of demographic measurement and assessment never before possible across the population.
 			p The sociological, medical and biological research that is possible with such an organized, comprehensive and quantitative view of the population is unavailable with current data collection.
 			p More information about the robust <a href="/api/version">OnTrack.io API</a> can be found on the <a href="/api">API info page</a>.
-			a.btn(href="/login") Log In or Register
+			.pull-center
+				a.btn(href="/login") Log In or Register
 			hr
 			blockquote Questions, concerns and letters are welcome and can be sent directly from the <a href="/contact">contact form</a>.

@@ -1,12 +1,7 @@
 extends layout
 
 block content
-
-	if message
-		p#message.pull-center.message #{message}
-	if error
-		p#error.pull-center.error #{error}
-
+	.pure-u-1.age-bar
 	.main.pure-g-r.container
 		if (!user)
 			.pure-u-1-4
@@ -19,26 +14,21 @@ block content
 				p.otherly Track your progress on <strong>anything</strong> you can quantify.
 
 		if user
-			.pure-u-1-12
-			.pure-u-1-3.pull-center
-				form(action="/add-datum", method="post")
-					- var d = new Date, day = d.getDate(), month = d.getMonth()+1, year = d.getFullYear();
-					if (month < 10)
-						- month = '0'+month;
-					if (day < 10)
-						- day = '0'+day;
-					.pure-u-3-4
-						input(type="text", data-provide="typeahead", name="category", placeholder="Name/Category", data-source='[#{ categories }]')
+			.pure-u-1-4
+			.pure-u-1-4
+			.pure-u-1-8.pull-center
+				small max <span class="muted">|</span> min
+			- for (var x = 0; x < finalData.length; x++)
+				- var divId = 'layer-'+finalData[x][0].category, graphId = divId+'-graph'
+				.pure-g-r.dash-layer(id=divId, style="min-height:50px;")
 					.pure-u-1-4
-						input.numeric(type="float", name="quantity", placeholder="Quantity")
-					#past-date.hidden
-						input(type="date", name="date", value="#{year+'-'+month+'-'+day}", placeholder="YYYY-MM-DD")
-					input(type="hidden", name="account", value=user._id)
-					#submit
-						input(type="submit", value="Add Data")
-					.pure-u-1.pull-left
-						a.btn(onClick="addPastData()") Add past data
-			.pure-u-1-12
+						h4
+							a(href="/category/#{finalData[x][0].category}") #{finalData[x][0].categoryName}
+					.pure-u-1-4(id=graphId, style="height:50px;")
+				.clearfix
+
+
+			.pure-u-1-4
 			.pure-u-1-2.pull-center
 					if user.username
 						h2.thin.no-mobile #{ user.username }
@@ -51,26 +41,12 @@ block content
 						p.lead.intro You should take a moment and <a href="/account" class="">augment your account</a>.
 						p It will make everything easier down the road.
 					a.btn.md-trigger(data-modal="modal-intro") How to enter data
-			if (foundCats.length > 0)
-				.main.pure-g-r
-					.pure-u-1-3
-					.pure-u-1-3.pull-center
-						h2.thin You are tracking
-					.pure-u-1-3
-					- function hexToRgb(hex){var result=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);return result?{r:parseInt(result[1],16),g:parseInt(result[2],16),b:parseInt(result[3],16)}:null}
-					for cat in foundCats.sort(function(a,b){if(a.name < b.name) return -1; if(a.name > b.name) return 1; return 0;})
-						- var color = '#eee', color2 = '222';
-						if (cat._id)
-							- color = hexToRgb(cat._id.toString().slice(0,6)), color2 = '000';
-							- color = 'rgba('+color.r+','+color.g+','+color.b+',0.4)';
-						.pure-u-1-5.pull-center
-							a(href="/category/#{cat._id}", style="background:#{color};color:##{color2}").btn #{cat.name}
-			if (foundCats.length < 1)
+			if (finalData.length < 1)
 				.main.pure-g-r
 					.pure-u-1-3
 					.pure-u-1-3.pull-center
 						h2.thin Suggestions to track
-						p A category describes a daily activity or aspect of you or your life.
+						p A category describes a daily activity or aspect you can quantify.
 					.pure-u-1-3
 					.pure-u-1-5
 					.pure-u-1-5.pull-center
@@ -79,11 +55,13 @@ block content
 						a(onClick='preloadDatum("Bodyweight (lbs)", "bodyweight")').btn.bodyweight Bodyweight (lbs)
 					.pure-u-1-5.pull-center
 						a(onClick='preloadDatum("Mood (max 10)", "mood")').btn.mood Mood (max 10)
-
+			script(src="/javascripts/d3.v3.min.js")
 			script(src="/javascripts/jquery.js")
 			script(src='/javascripts/numeric.js')
 			script(src='/javascripts/add-datum.js')
 			script(src='/javascripts/index.js')
+			- for (var x = 0; x < finalData.length; x++)
+				include dash-graph
 
 		if (!user)
 			script(src="/javascripts/d3.v3.min.js")

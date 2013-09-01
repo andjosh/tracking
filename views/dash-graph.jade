@@ -1,0 +1,26 @@
+script
+  var dataArray = !{JSON.stringify(finalData[x])};
+  var max_of_array = d3.max(dataArray, function(data){ return data.quantity; });
+  var min_of_array = d3.min(dataArray, function(data){ return data.quantity; });
+  var div = document.getElementById('layer-#{finalData[x][0].category}'), graphDivWidth = document.getElementById('layer-#{finalData[x][0].category}-graph').offsetWidth;
+  div.innerHTML += '<div class="pure-u-1-8 pull-center"><p>'+max_of_array+' <span class="muted">|</span> '+min_of_array+'</p></div>';
+  var graph = d3.select("#layer-#{finalData[x][0].category}-graph").append("svg:svg").attr("width", "100%").attr("height", "100%");
+  var data = [];
+  for (i = 0;i<dataArray.length;i++){
+    data.push(dataArray[i].quantity);
+  };
+  var x = d3.scale.linear().domain([0, data.length]).range([0, (graphDivWidth)]);
+  var y = d3.scale.linear().domain([(max_of_array+1), (min_of_array-2)]).range([0, 50]);
+  var line = d3.svg.line()
+  .x(function(d,i) {
+  return x(i);
+  })
+  .y(function(d) {
+  return y(d);
+  });
+  graph.append("svg:path")
+  .attr("id", "#{finalData[x][0].category}")
+  .attr("stroke", "#384682")
+  .attr("stroke-width", 1)
+  .attr("fill", "none")
+  .attr("d", line(data));
