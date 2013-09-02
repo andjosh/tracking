@@ -20,11 +20,11 @@ block content
 				small max <span class="muted">|</span> min
 			- for (var x = 0; x < finalData.length; x++)
 				- var divId = 'layer-'+finalData[x][0].category, graphId = divId+'-graph'
-				.pure-g-r.dash-layer(id=divId, style="min-height:50px;")
-					.pure-u-1-4
-						h4
-							a(href="/category/#{finalData[x][0].category}") #{finalData[x][0].categoryName}
-					.pure-u-1-4(id=graphId, style="height:50px;")
+				a(href="/category/#{finalData[x][0].category}")
+					.pure-g-r.dash-layer(id=divId, style="min-height:50px;")
+						.pure-u-1-4
+							h4 #{finalData[x][0].categoryName}
+						.pure-u-1-4(id=graphId, style="height:50px;")
 				.clearfix
 
 
