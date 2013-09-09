@@ -1,7 +1,6 @@
 extends layout
 
 block content
-
 	.main.pure-g-r
 		.pure-u-1-2.pull-center.no-mobile
 			h1.sans
@@ -9,8 +8,6 @@ block content
 			.pure-g-r
 				.pure-u-1-4
 					a(href="/my-data", class="btn", title="As a JSON file!") Export my data
-					// a(href="", class="btn") Email my graph
-					// p Your API key: <span class="btn key">#{user.key}</span>
 					p <a href="/api/docs" class="btn">API Access/Docs</a>
 		.pure-u-1-2
 			h3.pull-center.sans Edit your track
@@ -25,15 +22,15 @@ block content
 				.pure-g-r
 					.pure-u-1-2
 						#birthdate
-							if user.birthdate
+							if (user.birthdate)
 								- var day   = user.birthdate.getDate();
-								- var month = user.birthdate.getMonth() + 1;
+								- var month = user.birthdate.getMonth()+1;
 								if (month < 10)
 									- month = '0'+month;
 								if (day < 10)
 									- day = '0'+day;
 								- var year  = user.birthdate.getFullYear();
-							input(onBlur="bdChecker()", type="text", name="birthdate", placeholder="Birthdate (MM/DD/YYYY)", maxlength="10", value="#{ user.birthdate ? (month + '/' + day + '/' + year) : '' }")
+							input(onBlur="bdChecker()", type="text", name="birthdate", placeholder="Birthdate (MM/DD/YYYY)", maxlength="10", value="#{ (user.birthdate) ? (month + '/' + day + '/' + year) : '' }")
 					.pure-u-1-2
 						#gender
 							input(type="text", name="gender", placeholder="Gender (male/female/other)", value="#{ user.gender ? user.gender : '' }")
@@ -52,6 +49,7 @@ block content
 				.pull-right
 					small
 						a(href="/reset-password") Change password
+
 	script
 		var bd = document.getElementsByName("birthdate")[0];
 		var bdChecker = function() { 

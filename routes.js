@@ -69,7 +69,8 @@ module.exports = function (app) {
     });
 
     app.get('/account', ensureAuthenticated, function(req, res){
-          res.render('account', { user: req.user, title : "Your Track", message: req.flash('info') });
+      console.log(req.user)
+          res.render('account', { user: req.user, title : "Your Track", message: req.flash('info'), error: req.flash('error') });
     });
 
     app.post('/account', ensureAuthenticated, function(req, res){
