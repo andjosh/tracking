@@ -73,7 +73,7 @@ exports.index = function(io) {
 							categories.forEach(function(cat) {
 								catList.push('"'+cat.name+'"')
 							});
-							res.render('index',{title: 'OnTrack.io', user: req.user, foundCats: [], categories: catList, message: req.flash('info'), error: req.flash('error')})
+							res.render('index',{title: 'OnTrack.io', user: req.user, finalData: [], categories: catList, message: req.flash('info'), error: req.flash('error')})
 					})
 				};
 			});
